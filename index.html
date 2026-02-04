@@ -65,52 +65,51 @@
     const gpxGroup = L.featureGroup().addTo(map);
 
     // 2. TUS DATOS (Añade aquí tus rutas)
-    const misRutas = [
-        { nombre: "Vuelta al Embalse", archivo: "rutas/ruta1.gpx", tipo: "bici" },
-        { nombre: "Subida al Pico", archivo: "rutas/ruta2.gpx", tipo: "senderismo" },
-        { nombre: "Paseo Marítimo", archivo: "rutas/ruta3.gpx", tipo: "running" }
-    ];
+// 1. Función para obtener el color (se queda igual)
+function getColor(tipo) {
+    const colores = { bici: '#3498db', senderismo: '#27ae60', running: '#e67e22' };
+    return colores[tipo] || '#95a5a6';
+}
 
-    function getColor(tipo) {
-        const colores = { bici: '#3498db', senderismo: '#27ae60', running: '#e67e22' };
-        return colores[tipo] || '#95a5a6';
-    }
+// 2. CARGAR LOS DATOS DESDE EL ARCHIVO EXTERNO
+fetch('rutas.json')
+    .then(response => response.json())
+    .then(misRutas => {
+        
+        misRutas.forEach((ruta) => {
+            // Crear tarjeta en sidebar
+            const card = document.createElement('div');
+            card.className = 'ruta-card';
+            card.style.borderLeftColor = getColor(ruta.tipo);
+            card.innerHTML = `<strong>${ruta.nombre}</strong><br><small>${ruta.tipo.toUpperCase()}</small>`;
+            document.getElementById('lista-rutas').appendChild(card);
 
-    // 3. PROCESAMIENTO
-    misRutas.forEach((ruta, index) => {
-        // Crear tarjeta en sidebar
-        const card = document.createElement('div');
-        card.className = 'ruta-card';
-        card.style.borderLeftColor = getColor(ruta.tipo);
-        card.innerHTML = `<strong>${ruta.nombre}</strong><br><small>${ruta.tipo.toUpperCase()}</small>`;
-        document.getElementById('lista-rutas').appendChild(card);
+            // Cargar GPX en el mapa
+            const track = new L.GPX(ruta.archivo, {
+                async: true,
+                polyline_options: { color: getColor(ruta.tipo), weight: 3, opacity: 0.7 },
+                marker_options: { startIconUrl: null, endIconUrl: null }
+            }).on('loaded', function(e) {
+                const g = e.target;
+                totalKM += (g.get_distance() / 1000);
+                totalElev += g.get_elevation_gain();
+                count++;
 
-        // Cargar GPX en el mapa
-        const track = new L.GPX(ruta.archivo, {
-            async: true,
-            polyline_options: { color: getColor(ruta.tipo), weight: 3, opacity: 0.7 },
-            marker_options: { startIconUrl: null, endIconUrl: null }
-        }).on('loaded', function(e) {
-            const g = e.target;
-            totalKM += (g.get_distance() / 1000);
-            totalElev += g.get_elevation_gain();
-            count++;
+                document.getElementById('total-dist').innerText = totalKM.toFixed(1);
+                document.getElementById('total-elev').innerText = totalElev.toFixed(0);
+                document.getElementById('count').innerText = count;
 
-            // Actualizar Dashboard
-            document.getElementById('total-dist').innerText = totalKM.toFixed(1);
-            document.getElementById('total-elev').innerText = totalElev.toFixed(0);
-            document.getElementById('count').innerText = count;
+                // Ajustar zoom cuando todas estén listas
+                if(count === misRutas.length) map.fitBounds(gpxGroup.getBounds());
+            }).addTo(gpxGroup);
 
-            // Zoom automático al cargar todas
-            if(count === misRutas.length) map.fitBounds(gpxGroup.getBounds());
-        }).addTo(gpxGroup);
-
-        // Evento al hacer clic en la tarjeta
-        card.onclick = () => {
-            map.fitBounds(track.getBounds(), { padding: [50, 50] });
-            track.bindPopup(`<b>${ruta.nombre}</b>`).openPopup();
-        };
-    });
+            card.onclick = () => {
+                map.fitBounds(track.getBounds(), { padding: [50, 50] });
+                track.bindPopup(`<b>${ruta.nombre}</b>`).openPopup();
+            };
+        });
+    })
+    .catch(error => console.error('Error cargando el archivo JSON:', error));    
 </script>
 </body>
 </html>
