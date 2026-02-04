@@ -1,0 +1,208 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const shorts = [
+	{
+		title: '¿El ejercicio baja el Colesterol LDL? Al contrario',
+		url: 'https://www.youtube.com/shorts/B2sRp0RZkao',
+	},
+	{
+		title: '¿Qué desayunar para mejorar la composición corporal?',
+		url: 'https://www.youtube.com/shorts/p5c6PX3J0eA',
+	},
+	{
+		title: '¿ENTRENAR FUERZA SOLO 20 MIN A LA SEMANA?',
+		url: 'https://www.youtube.com/shorts/KpWZIYkOC8w',
+	},
+	{
+		title: '¿Por qué hay más infartos en Navidades?',
+		url: 'https://www.youtube.com/shorts/dbUjK7v1d2I',
+	},
+	{
+		title: '¿Una copa de vino al día es buena para la salud?',
+		url: 'https://www.youtube.com/shorts/F6EejlhxlAQ',
+	},
+	{
+		title: '¿Y si no le baja la fiebre a mi hijo?',
+		url: 'https://www.youtube.com/shorts/1lZ_sWkyvC4',
+	},
+	{
+		title: 'Las estatinas disminuyen tu fuerza y tu masa muscular',
+		url: 'https://www.youtube.com/shorts/SDpVlnJtjXs',
+	},
+	{
+		title: '¿Colesterol LDL cuanto más bajo mejor?? No. Nuevo estudio',
+		url: 'https://www.youtube.com/shorts/pziglpws47g',
+	},
+	{
+		title: '¿Un fármaco que sube el colesterol LDL y mejora tu corazón?',
+		url: 'https://www.youtube.com/shorts/0RC2OaTGwS0',
+	},
+	{
+		title: '¿El ayuno sube el colesterol LDL?',
+		url: 'https://www.youtube.com/shorts/BWHQVNuk4Bg',
+	},
+	{
+		title: '¿Infarto sin factores de riesgo clásicos? Qué debes mirar',
+		url: 'https://www.youtube.com/shorts/tMEPDkIBbss',
+	},
+	{
+		title: '¿Cuántos gramos de glucosa tenemos en la sangre?',
+		url: 'https://www.youtube.com/shorts/G4ogxex6ycw',
+	},
+	{
+		title: '¿Mantequilla o Margarina?',
+		url: 'https://www.youtube.com/shorts/WyxGfWPRamE',
+	},
+	{
+		title: '7 consejos para mejorar tu salud en invierno',
+		url: 'https://www.youtube.com/shorts/_EBPQ1Fmeio',
+	},
+	{
+		title: '5 consejos para mejorar tu composición corporal',
+		url: 'https://www.youtube.com/shorts/rnmtpPt2TfU',
+	},
+	{
+		title: '¿Cuál es el alimento más completo?',
+		url: 'https://www.youtube.com/shorts/hMvn3Y1loz8',
+	},
+	{
+		title: 'Colesterol bajo y riesgo de ictus hemorrágico',
+		url: 'https://www.youtube.com/shorts/MKFSodA_j2M',
+	},
+	{
+		title: 'Luz Infrarroja: Mejor rendimiento y recuperación',
+		url: 'https://www.youtube.com/shorts/GaSzZ9L9HwE',
+	},
+	{
+		title: 'Las estatinas NO funcionan por bajar el Colesterol',
+		url: 'https://www.youtube.com/shorts/HaSgIawAzh4',
+	},
+	{
+		title: 'Ejercicio interválico con sprints o correr 2 horas, qué es mejor?',
+		url: 'https://www.youtube.com/shorts/sgwroAd8bt4',
+	},
+	{
+		title: 'Cambio de hora de otoño.  ¿Es bueno?',
+		url: 'https://www.youtube.com/shorts/0tIw8se7Hf4',
+	},
+	{
+		title: 'Grasa Visceral,  Lipoproteína (a) y Riesgo Cardiovascular',
+		url: 'https://www.youtube.com/shorts/XFD8FySCKds',
+	},
+	{
+		title: 'Muévete en el día a día, por tu salud',
+		url: 'https://www.youtube.com/shorts/6Jj3ScrLMGI',
+	},
+	{
+		title: '10 consejos para tener un buen SUEÑO reparador',
+		url: 'https://www.youtube.com/shorts/-oLhRRClEn8',
+	},
+	{
+		title: '¿Las estatinas te envejecen 15 años?',
+		url: 'https://www.youtube.com/shorts/xcju_RGdIYE',
+	},
+	{
+		title: '¿Abdominales sólo 4 minutos a la semana?',
+		url: 'https://www.youtube.com/shorts/GgcHP3YiaVg',
+	},
+	{
+		title: 'Lipoproteína (a) alta... ¿Qué hago?',
+		url: 'https://www.youtube.com/shorts/wZbiRv797LE',
+	},
+	{
+		title: '¿Paracetamol y Autismo?',
+		url: 'https://www.youtube.com/shorts/nmcIrysRC9I',
+	},
+	{
+		title: '¿Los huevos suben el colesterol?',
+		url: 'https://www.youtube.com/shorts/mnknXOXqAPY',
+	},
+	{
+		title: '¿La fruta entera es buena?',
+		url: 'https://www.youtube.com/shorts/FuH04nYrQus',
+	},
+	{
+		title: 'Trabajo a turnos y Riesgo de Diabetes',
+		url: 'https://www.youtube.com/shorts/2RxfRx1PNEk',
+	},
+	{
+		title: 'Entrena con tu cuerpo bajo el sol',
+		url: 'https://www.youtube.com/shorts/aWilNXW56iY',
+	},
+	{
+		title: 'Un perro mejorará tu Salud Cardiovascular',
+		url: 'https://www.youtube.com/shorts/wDMu3piOvkA',
+	},
+	{
+		title: 'Verduras y Óxido Nítrico',
+		url: 'https://www.youtube.com/shorts/yoi3CA9g2_I',
+	},
+	{
+		title: 'Porqué el Colesterol NO viene de la grasa saturada',
+		url: 'https://www.youtube.com/shorts/APUzcgBdmEA',
+	},
+	{
+		title: 'CUIDA EL GLICOCÁLIX DE TUS ARTERIAS',
+		url: 'https://www.youtube.com/shorts/rhsLPafM3wk',
+	},
+	{
+		title: '¿Cómo interpretar una ANALÍTICA DE COLESTEROL?',
+		url: 'https://www.youtube.com/shorts/VXN5gWILE-0',
+	},
+	{
+		title: '¿Existe un BRONCEADO SALUDABLE?',
+		url: 'https://www.youtube.com/shorts/GtZufR7Ou2I',
+	},
+	{
+		title: 'LA GENTE QUE TIENE PERROS VIVE MÁS. Al salir al SOL 3 vecea al día. Fórmula 20-20-20',
+		url: 'https://www.youtube.com/shorts/h5Q3OTp_d4s',
+	},
+	{
+		title: 'NO iluminar tus días es tan malo para la salud como NO oscurecer tus noches',
+		url: 'https://www.youtube.com/shorts/8VTDpEiz6kA',
+	},
+	{
+		title: 'Si haces ejercicio de fuerza, hazlo AFUERA BAJO EL SOL',
+		url: 'https://www.youtube.com/shorts/EENPyLXlg4s',
+	},
+	{
+		title: 'Tu conexión social importa más que tu colesterol',
+		url: 'https://www.youtube.com/shorts/BR7NvlxoLoQ',
+	},
+];
+---
+
+<Layout>
+	<main class="page">
+		<header class="hero">
+			<p class="eyebrow">Directorio</p>
+			<h1>Shorts de YouTube</h1>
+			<p class="subtitle">Listado con enlaces directos a los shorts.</p>
+			<a class="back" href="/">Volver al inicio</a>
+		</header>
+
+		<section class="grid">
+			{shorts.map((short) => {
+				const videoId = new URL(short.url).pathname.split('/').pop();
+				return (
+					<article class="card">
+						<a class="thumb" href={short.url} target="_blank" rel="noreferrer">
+							<img
+								src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`}
+								alt={`Portada del short ${short.title}`}
+								loading="lazy"
+							/>
+						</a>
+						<div class="card-header">
+							<h2>{short.title}</h2>
+							<a href={short.url} target="_blank" rel="noreferrer">
+								Ver en YouTube
+							</a>
+						</div>
+					</article>
+				);
+			})}
+		</section>
+	</main>
+</Layout>

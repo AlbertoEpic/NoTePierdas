@@ -1,0 +1,358 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const videos = [
+	{
+		title: 'Bajar el COLESTEROL con FÁRMACOS NO mejorará tu Salud',
+		url: 'https://www.youtube.com/watch?v=xTde6iblRg4',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'Ancel Keys y la mentira de la Hipótesis Lipídica',
+		url: 'https://www.youtube.com/watch?v=mGW8jFno9Ss',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'Estatinas y Óxido Nítrico (el colesterol no pinta nada)',
+		url: 'https://www.youtube.com/watch?v=haobFwOkNw4',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: '¿Qué es la Lipoproteína (a) y por qué causa más infartos?',
+		url: 'https://www.youtube.com/watch?v=-aGU33SRo8Q',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'MICROBIOMA E INFARTOS: Propionato de Imidazol',
+		url: 'https://www.youtube.com/watch?v=WtsDmnKf-v4',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'ESTRÉS Y RIESGO DE INFARTO',
+		url: 'https://www.youtube.com/watch?v=yDR8AJ4iVp8',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: "Recibe el sol 20' - 20' - 20' al día por tu salud",
+		url: 'https://www.youtube.com/watch?v=sCwCD-WxYLM',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: '¿El COLESTEROL es la causa de todos nuestros males?',
+		url: 'https://www.youtube.com/watch?v=GVuvtCcdNzk',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: '¿DEBEMOS REALMENTE REDUCIR LA SAL?',
+		url: 'https://www.youtube.com/watch?v=aeuGo7EIu3A',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'Estudio INTERHEART: EL COLESTEROL ES INOCENTE',
+		url: 'https://www.youtube.com/watch?v=CLqqn7IFhR8',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'CUANTO MEJOR COMO, MÁS ME SUBE EL COLESTEROL!',
+		url: 'https://www.youtube.com/watch?v=skxZinCP1bY',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'POR QUÉ LOS HUEVOS SON BUENOS PARA TU SALUD, en 5 minutos❤️',
+		url: 'https://www.youtube.com/watch?v=aJ2dP5gA-bk',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: '¿Una copa de vino al día mejora la salud carsiovascular? Estudio Predimed, dic 2024',
+		url: 'https://www.youtube.com/watch?v=XGWu-YJ18bY',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'Colesterol LDL alto con Triglicéridos bajos y HDL alto? LEAN MASS HYPER RESPONDER',
+		url: 'https://www.youtube.com/watch?v=WOVMDsJMHUU',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'Colesterol alto ¿Tengo que tomar estatinas?',
+		url: 'https://www.youtube.com/watch?v=AENoEqmFnoc',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'DIABETES Y RIESGO DE INFARTO. Es el azúcar alto. No el colesterol',
+		url: 'https://www.youtube.com/watch?v=0P2NRk1Okz8',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'Colesterol LDL pequeño y denso?',
+		url: 'https://www.youtube.com/watch?v=cih64ftAhg8',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'Luz artificial por las noches y cáncer',
+		url: 'https://www.youtube.com/watch?v=Qi5r3j3hMbA',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: '¿Existe un Colesterol Bueno y un Colesterol Malo? Pues no.',
+		url: 'https://www.youtube.com/watch?v=6Ny090zG17c',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'El Colesterol LDL no guarda relación con la placa de ateroma. Lean Mass Hyper Responder. Keto Trial',
+		url: 'https://www.youtube.com/watch?v=Lt1tGck7NQo',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'SAL AFUERA AL AMANECER. Los beneficios del espectro Infrarrojo',
+		url: 'https://www.youtube.com/watch?v=jGdQj_KdegI',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'INFRARROJO: SI ESTÁS ENFERMO, ABRE LAS VENTANAS O SAL AFUERA!',
+		url: 'https://www.youtube.com/watch?v=NEdVqPoYrB4',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'AYUNO INTERMITENTE: ¿Qué es mejor, NO DESAYUNAR o NO CENAR?',
+		url: 'https://www.youtube.com/watch?v=4qPhVDgnLgk',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: '¿El sol causa melanoma?',
+		url: 'https://www.youtube.com/watch?v=IsVnS-o6TEY',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: '¿Existe un bronceado saludable? La magia de la MELANINA',
+		url: 'https://www.youtube.com/watch?v=Xh8xcFPpR30',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'DIABETES: COMER EN EXTERIORES REDUCE TU PICO DE AZÚCAR EN SANGRE',
+		url: 'https://www.youtube.com/watch?v=9KYORXunDYg',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: '5 consejos para no quemarse al sol',
+		url: 'https://www.youtube.com/watch?v=tqjC5vL4SX8',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'CHARLA HÁBITOS SALUDABLES en Bujaraloz mayo 2024',
+		url: 'https://www.youtube.com/watch?v=jv_O2Q_6AiI',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'Las PLACAS de aterosclerosis NO están formadas por COLESTEROL- LDL',
+		url: 'https://www.youtube.com/watch?v=0lYGkqUxc9I',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'El Colesterol NO es factor CAUSAL de los infartos',
+		url: 'https://www.youtube.com/watch?v=MYrpKmM1Oog',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'Bajar el COLESTEROL de la analítica NO redunda en mejoría de la salud',
+		url: 'https://www.youtube.com/watch?v=yjXmg57N1e0',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'El Tabaco NO crea placas de Colesterol',
+		url: 'https://www.youtube.com/watch?v=_PI591iUoNk',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'BIOFILIA: El amor hacia la naturaleza',
+		url: 'https://www.youtube.com/watch?v=V0koQPcJIZQ',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'La GRASA SATURADA animal natural es beneficiosa para la salud',
+		url: 'https://www.youtube.com/watch?v=d2Vn0W56vo8',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'Te preocupa tu Colesterol? Mejor mide tu Lipoproteína (a)',
+		url: 'https://www.youtube.com/watch?v=klM0oaeyk3U',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'Un Colesterol LDL alto al hacer una dieta cetogénica es malo??',
+		url: 'https://www.youtube.com/watch?v=8t71RGFU7_M',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'El ayuno intermitente NO aumenta en un 91% nuestro riesgo cardiovascular',
+		url: 'https://www.youtube.com/watch?v=AUSiP1fW9iM',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'REDUCIR LA SAL ES UN ERROR. Sal y Riesgo Cardiovascular',
+		url: 'https://www.youtube.com/watch?v=I9mMEwI86P0',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'PROTEÍNA: Cuánta necesitamos. Los mitos de tomar "demasiada proteína"',
+		url: 'https://www.youtube.com/watch?v=8oq4LCKbw0Y',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: '¿LOS CARBOHIDRATOS ENGORDAN?',
+		url: 'https://www.youtube.com/watch?v=9Y7mtuDj1LU',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'Grasa visceral, Cortisol y Rieso Cardiovascular. El colesterol que era fuera de la ecuación',
+		url: 'https://www.youtube.com/watch?v=lJGShFyzqcA',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'LOS BENEFICIOS DE LOS HUEVOS, colesterol y altísima densidad nutricional',
+		url: 'https://www.youtube.com/watch?v=ER5dVt7nH8w',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'DIETA CETOGÉNICA, indicaciones y mitos',
+		url: 'https://www.youtube.com/watch?v=EOwwHmTkhxs',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'LOS BENEFICIOS DE EXPONERSE AL SOL de forma responsable',
+		url: 'https://www.youtube.com/watch?v=MamVx-HHfoc',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'Tu nivel de COLESTEROL es IRRELEVANTE. Mejora tu Salud Metabólica',
+		url: 'https://www.youtube.com/watch?v=1RokWce1fzg',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'Por qué necesitamos dormir Entrevista Aragón TV Jorge García-Dihinx',
+		url: 'https://www.youtube.com/watch?v=pqlCj_mKlts',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: '¿EL SOL ES BUENO O ES MALO? Entrevista Aragón TV Jorge García-Dihinx, Otro Punto de Vista',
+		url: 'https://www.youtube.com/watch?v=3mtTh84Jsa4',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: '¿CUÁNTAS COMIDAS HAY QUE HACER AL DIA? Otro punto de vista Aragón TV',
+		url: 'https://www.youtube.com/watch?v=3xDR7Wk8RUY',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'OTRO PUNTO DE VISTA CONSUMO DE AZUCAR Jorge García Dihinx',
+		url: 'https://www.youtube.com/watch?v=ZJo7hEKJeNs',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'Otro punto de vista: El colesterol un arma de distracción masiva',
+		url: 'https://www.youtube.com/watch?v=2Gt6oceZNI4',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'Foods of animal origin (without carbs) to treat metabolic syndrome and type 2 diabetes',
+		url: 'https://www.youtube.com/watch?v=ixxzObpFDdE',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+	{
+		title: 'IX CURSO RCP AVANZADA PEDIATRICA Y NEONATAL ZARAGOZA ABRIL 2015 Grupo Aragonés RCP Ped y NN',
+		url: 'https://www.youtube.com/watch?v=zEs6mmgpWE0',
+		channel: 'La Meteo Que Viene',
+		description: 'Playlist SALUD',
+	},
+];
+---
+
+<Layout>
+	<main class="page">
+		<header class="hero">
+			<p class="eyebrow">Directorio</p>
+			<h1>Mis vídeos de YouTube</h1>
+			<p class="subtitle">
+				Listado actualizado con enlaces directos.
+			</p>
+			<a class="back" href="/">Volver a la portada</a>
+		</header>
+
+		<section class="grid">
+			{videos.map((video) => {
+				const videoId = new URL(video.url).searchParams.get('v');
+				return (
+					<article class="card">
+						<a class="thumb" href={video.url} target="_blank" rel="noreferrer">
+							<img
+								src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`}
+								alt={`Portada del video ${video.title}`}
+								loading="lazy"
+							/>
+						</a>
+						<div class="card-header">
+							<h2>{video.title}</h2>
+							<a href={video.url} target="_blank" rel="noreferrer">
+								Ver en YouTube
+							</a>
+						</div>
+						<p class="meta">
+							<span>{video.channel}</span>
+						</p>
+						<p class="description">{video.description}</p>
+					</article>
+				);
+			})}
+		</section>
+	</main>
+</Layout>

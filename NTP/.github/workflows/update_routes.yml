@@ -1,0 +1,38 @@
+name: Actualizar Lista de Rutas
+
+on:
+  push:
+    paths:
+      - 'rutas/*.gpx' # Se activa solo si subes tracks nuevos
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v3
+
+      - name: Generar rutas.json
+        run: |
+          echo "[" > rutas.json
+          first=true
+          for file in rutas/*.gpx; do
+            if [ "$first" = true ]; then
+              first=false
+            else
+              echo "," >> rutas.json
+            fi
+            filename=$(basename "$file")
+            # Limpiamos el nombre para que quede bonito (quita .gpx y guiones)
+            pretty_name=$(echo "$filename" | sed 's/\.gpx//' | sed 's/-/ /g' | sed 's/_/ /g')
+            echo "  { \"nombre\": \"$pretty_name\", \"archivo\": \"rutas/$filename\", \"tipo\": \"senderismo\" }" >> rutas.json
+          done
+          echo "]" >> rutas.json
+
+      - name: Configurar Git y Subir cambios
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          git add rutas.json
+          git commit -m "Auto-update rutas.json" || exit 0
+          git push

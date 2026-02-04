@@ -1,0 +1,192 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout>
+	<Fragment slot="head">
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+		<link rel="stylesheet" href="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.css" />
+	</Fragment>
+
+	<main class="rutas-page">
+		<section class="rutas-shell">
+			<aside class="sidebar">
+				<header class="sidebar-header">
+					<p class="eyebrow">Rutas GPS</p>
+					<h1>Mi Bitácora de Rutas</h1>
+					<p class="subtitle">Explora tracks y estadísticas en un mapa interactivo.</p>
+				</header>
+				<div id="lista-rutas" class="rutas-list"></div>
+			</aside>
+
+			<section class="map-shell">
+				<div id="stats-panel" class="stats-panel">
+					<div>📏 <b>Distancia:</b> <span id="total-dist" class="stat-val">0</span> km</div>
+					<div>⛰️ <b>Desnivel:</b> <span id="total-elev" class="stat-val">0</span> m</div>
+					<div>📍 <b>Total:</b> <span id="count" class="stat-val">0</span> tracks</div>
+				</div>
+				<div id="map" class="map"></div>
+			</section>
+		</section>
+	</main>
+
+	<script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+	<script is:inline src="https://unpkg.com/leaflet-gpx/gpx.js"></script>
+	<script is:inline src="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.js"></script>
+
+	<script is:inline>
+		const map = L.map('map').setView([40.41, -3.7], 6);
+		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+		let totalKM = 0;
+		let totalElev = 0;
+		let count = 0;
+		const gpxGroup = L.featureGroup().addTo(map);
+
+		function getColor(tipo) {
+			const colores = { bici: '#3498db', senderismo: '#27ae60', running: '#e67e22', skimo: '#a855f7' };
+			return colores[tipo] || '#95a5a6';
+		}
+
+		fetch('/ntp/rutas.json')
+			.then((response) => response.json())
+			.then((misRutas) => {
+				misRutas.forEach((ruta) => {
+					const card = document.createElement('div');
+					card.className = 'ruta-card';
+					card.style.borderLeftColor = getColor(ruta.tipo);
+					card.innerHTML = `<strong>${ruta.nombre}</strong><br><small>${ruta.tipo.toUpperCase()}</small>`;
+					document.getElementById('lista-rutas').appendChild(card);
+
+					const track = new L.GPX(ruta.archivo, {
+						async: true,
+						polyline_options: { color: getColor(ruta.tipo), weight: 3, opacity: 0.75 },
+						marker_options: { startIconUrl: null, endIconUrl: null },
+					})
+						.on('loaded', function (e) {
+							const g = e.target;
+							totalKM += g.get_distance() / 1000;
+							totalElev += g.get_elevation_gain();
+							count += 1;
+
+							document.getElementById('total-dist').innerText = totalKM.toFixed(1);
+							document.getElementById('total-elev').innerText = totalElev.toFixed(0);
+							document.getElementById('count').innerText = count;
+
+							if (count === misRutas.length) {
+								map.fitBounds(gpxGroup.getBounds());
+							}
+						})
+						.addTo(gpxGroup);
+
+					card.onclick = () => {
+						map.fitBounds(track.getBounds(), { padding: [50, 50] });
+						track.bindPopup(`<b>${ruta.nombre}</b>`).openPopup();
+					};
+				});
+			})
+			.catch((error) => console.error('Error cargando el archivo JSON:', error));
+	</script>
+</Layout>
+
+<style>
+	.rutas-page {
+		padding: 2.5rem 1.5rem 3.5rem;
+	}
+
+	.rutas-shell {
+		display: grid;
+		grid-template-columns: minmax(240px, 320px) 1fr;
+		gap: 1.5rem;
+		min-height: min(82svh, 900px);
+	}
+
+	.sidebar {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+		background: rgba(9, 13, 23, 0.7);
+		border: 1px solid rgba(148, 163, 184, 0.2);
+		border-radius: 20px;
+		padding: 1.5rem;
+		box-shadow: 0 24px 50px rgba(2, 6, 23, 0.5);
+		backdrop-filter: blur(12px);
+	}
+
+	.sidebar-header h1 {
+		margin: 0;
+		font-size: 1.6rem;
+	}
+
+	.rutas-list {
+		overflow-y: auto;
+		display: grid;
+		gap: 0.75rem;
+		padding-right: 0.2rem;
+	}
+
+	.ruta-card {
+		background: rgba(27, 41, 70, 0.6);
+		padding: 0.85rem 0.9rem;
+		border-radius: 12px;
+		cursor: pointer;
+		transition: 0.2s ease;
+		border-left: 4px solid transparent;
+		box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.2);
+	}
+
+	.ruta-card:hover {
+		transform: translateY(-2px);
+		background: rgba(43, 69, 115, 0.75);
+	}
+
+	.map-shell {
+		position: relative;
+		border-radius: 24px;
+		overflow: hidden;
+		border: 1px solid rgba(148, 163, 184, 0.25);
+		box-shadow: 0 30px 60px rgba(2, 6, 23, 0.55);
+		height: min(82svh, 900px);
+		min-height: 420px;
+	}
+
+	.map {
+		width: 100%;
+		height: 100%;
+		min-height: 420px;
+	}
+
+	.stats-panel {
+		position: absolute;
+		top: 16px;
+		right: 16px;
+		z-index: 1000;
+		background: rgba(6, 10, 19, 0.85);
+		color: #f8fafc;
+		padding: 0.9rem 1rem;
+		border-radius: 14px;
+		box-shadow: 0 10px 24px rgba(2, 6, 23, 0.4);
+		display: grid;
+		gap: 0.35rem;
+		font-size: 0.95rem;
+	}
+
+	.stat-val {
+		font-weight: 700;
+		color: #f4e1a1;
+	}
+
+	@media (max-width: 960px) {
+		.rutas-shell {
+			grid-template-columns: 1fr;
+		}
+
+		.sidebar {
+			order: 2;
+		}
+
+		.map-shell {
+			height: 60svh;
+		}
+	}
+</style>

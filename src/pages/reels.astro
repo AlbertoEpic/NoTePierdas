@@ -1,0 +1,252 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const reels = [
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DRHlZ4SjXq0/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DQ-FNuzDbHZ/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DQ8zMa0jZC4/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DQwqPV9jfHV/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DQqyd7LDVIs/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DQo-9V1jdNA/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DQjHiwTDRae/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DQblzoqDb-3/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DQRIReBjQx4/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DQJ7So3jC3j/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DQHj4zRDMvw/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DQCkiQIDftO/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DP_29HNDI7-/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DP9CL73DEia/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DP6cpyODJQ-/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DP3pYw9DfvG/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DP1-W9HDbEz/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DPyfSm-jWFs/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DPv4b4Gja2Q/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DPrJnQ9DJUC/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DPmI9PfDU2q/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DPhJ6J9DS7Y/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DPdVAY4DWiw/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DPWMci4jd86/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DPQgylnDQH2/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DPMfLGSDThv/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DPDhB3yDVZt/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DPA-6xTjbD1/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DO6cwHKDT2l/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DOwKGNBDc6n/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DOrC-TsjUVC/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DOn0WrGFUdr/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DOlx4JrElhz/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DOlLlvzDQf_/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DOgNtVRjcaB/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DOdb3OVE0h2/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DOUAdLyCr5e/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DORIKZ6jMsx/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DOG4OoODQFk/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DODW8WYjdXl/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DN_Yo6-Ddku/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DN8k_haDWTX/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DN6DlqhjdVK/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DN3LtSPWpiD/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DN1MBobWuAn/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DNyCedq2my5/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DNuf00YRIEN/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DNqAw3iN785/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DNlo-C7qWoI/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DNk3qQtO7QU/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DNiS1IytBHy/',
+	},
+	{
+		title: 'Reel sin descripción',
+		url: 'https://www.instagram.com/jorgegarciadihinx/reel/DNfuGZWovCo/',
+	},
+];
+---
+
+<Layout>
+	<main class="page page--reels">
+		<header class="hero">
+			<p class="eyebrow">Directorio</p>
+			<h1>Reels de Instagram</h1>
+			<p class="subtitle">Listado con enlaces directos a los reels.</p>
+			<a class="back" href="/">Volver a la portada</a>
+		</header>
+
+		<section class="grid">
+			{reels.map((reel, index) => {
+				const reelId = new URL(reel.url).pathname.split('/').filter(Boolean).pop();
+				const thumbnail = `https://www.instagram.com/reel/${reelId}/media/?size=m`;
+				return (
+					<article class="card">
+						<a class="thumb" href={reel.url} target="_blank" rel="noreferrer">
+							<img
+								src={thumbnail}
+								alt={`Miniatura del reel ${index + 1}`}
+								loading="lazy"
+								decoding="async"
+								referrerpolicy="no-referrer"
+								onerror="this.src='/instagram-placeholder.svg'"
+							/>
+						</a>
+						<div class="card-header">
+							<h2>Reel {index + 1}</h2>
+							<a href={reel.url} target="_blank" rel="noreferrer">
+								Ver en Instagram
+							</a>
+						</div>
+					</article>
+				);
+			})}
+		</section>
+	</main>
+</Layout>

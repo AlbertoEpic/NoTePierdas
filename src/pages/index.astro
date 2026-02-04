@@ -1,11 +1,50 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const links = [
+	{
+		title: 'Vídeos de YouTube',
+		description: 'Listado completo con miniaturas y enlaces directos.',
+		url: '/videos',
+	},
+	{
+		title: 'Shorts de YouTube',
+		description: 'Lista rápida de shorts con sus enlaces.',
+		url: '/shorts',
+	},
+	{
+		title: 'Reels de Instagram',
+		description: 'Listado de reels con enlaces directos.',
+		url: '/reels',
+	},
+	{
+		title: 'Rutas GPS',
+		description: 'Mapa interactivo con tracks y estadísticas.',
+		url: '/rutas',
+	},
+];
 ---
 
 <Layout>
-	<Welcome />
+	<main class="page">
+		<header class="hero">
+			<p class="eyebrow">Portada</p>
+			<h1>La Meteo Que Viene</h1>
+			<p class="subtitle">
+				Accesos directos a los contenidos de YouTube.
+			</p>
+		</header>
+
+		<section class="grid">
+			{links.map((link) => (
+				<article class="card">
+					<div class="card-body">
+						<h2>{link.title}</h2>
+						<p>{link.description}</p>
+					</div>
+					<a class="action" href={link.url}>Entrar</a>
+				</article>
+			))}
+		</section>
+	</main>
 </Layout>
