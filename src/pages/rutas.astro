@@ -1,5 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+const base = import.meta.env.BASE_URL;
+const baseRoot = base.replace(/\/+$/, '');
 ---
 
 <Layout>
@@ -35,7 +38,8 @@ import Layout from '../layouts/Layout.astro';
 	<script is:inline src="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.js"></script>
 
 	<script is:inline>
-		const toBasePath = (path = '') => `/${path.replace(/^\/+/, '')}`;
+		const baseRoot = ${JSON.stringify(baseRoot)};
+		const toBasePath = (path = '') => `${baseRoot}/${path.replace(/^\/+/, '')}`;
 
 		const map = L.map('map').setView([40.41, -3.7], 6);
 		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);

@@ -1,6 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
+const base = import.meta.env.BASE_URL;
+const baseRoot = base.replace(/\/+$/, '');
+const toBasePath = (path = '') => `${baseRoot}/${path.replace(/^\/+/, '')}`;
+
 const links = [
 	{
 		title: 'Vídeos de YouTube',
@@ -42,7 +46,7 @@ const links = [
 						<h2>{link.title}</h2>
 						<p>{link.description}</p>
 					</div>
-					<a class="action" href={link.url}>Entrar</a>
+					<a class="action" href={toBasePath(link.url)}>Entrar</a>
 				</article>
 			))}
 		</section>
