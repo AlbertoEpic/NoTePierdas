@@ -1,3 +1,5 @@
 [
-  { "nombre": "Portalet-Astún", "archivo": "/ntp/rutas/Portalet-Astún.gpx", "tipo": "skimo" }
+  { "nombre": "BTT   San Miguel de Foces paborrar", "archivo": "/ntp/rutas/BTT - San Miguel de Foces_paborrar.gpx", "tipo": "senderismo" }
+,
+  { "nombre": "Portalet Astún", "archivo": "/ntp/rutas/Portalet-Astún.gpx", "tipo": "senderismo" }
 ]
