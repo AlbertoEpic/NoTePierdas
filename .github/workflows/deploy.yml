@@ -12,14 +12,14 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      ASTRO_BASE: /NoTePierdas
     steps:
       - name: Checkout your repository
         uses: actions/checkout@v4
 
       - name: Install, build, and upload your site
         uses: withastro/action@v3
-        env:
-          ASTRO_BASE: /NoTePierdas
 
   deploy:
     needs: build
