@@ -19,20 +19,52 @@ jobs:
         run: |
           mkdir -p public/ntp/rutas
           cp -f rutas/*.gpx public/ntp/rutas/ || true
-          echo "[" > public/ntp/rutas.json
-          first=true
-          for file in rutas/*.gpx; do
-            if [ "$first" = true ]; then
-              first=false
-            else
-              echo "," >> public/ntp/rutas.json
-            fi
-            filename=$(basename "$file")
-            # Limpiamos el nombre para que quede bonito (quita .gpx y guiones)
-            pretty_name=$(echo "$filename" | sed 's/\.gpx//' | sed 's/-/ /g' | sed 's/_/ /g')
-            echo "  { \"nombre\": \"$pretty_name\", \"archivo\": \"/ntp/rutas/$filename\", \"tipo\": \"senderismo\" }" >> public/ntp/rutas.json
-          done
-          echo "]" >> public/ntp/rutas.json
+          if [ ! -f public/ntp/rutas.json ]; then
+            printf "[\n]\n" > public/ntp/rutas.json
+          fi
+          python - <<'PY'
+          import os
+          import re
+
+          rutas_json = os.path.join('public', 'ntp', 'rutas.json')
+          rutas_dir = 'rutas'
+          if not os.path.isdir(rutas_dir):
+            raise SystemExit(0)
+
+          with open(rutas_json, 'r', encoding='utf-8') as f:
+            text = f.read()
+
+          if ']' not in text:
+            raise SystemExit('rutas.json no tiene cierre de array')
+
+          existing = set(re.findall(r'"archivo"\s*:\s*"([^"]+)"', text))
+
+          def pretty_name(filename):
+            name = re.sub(r'\.gpx$', '', filename, flags=re.IGNORECASE)
+            name = name.replace('-', ' ').replace('_', ' ')
+            return name
+
+          for filename in sorted(os.listdir(rutas_dir)):
+            if not filename.lower().endswith('.gpx'):
+              continue
+            archivo = f"/ntp/rutas/{filename}"
+            if archivo in existing:
+              continue
+            entry = f"  {{ \"nombre\": \"{pretty_name(filename)}\", \"archivo\": \"{archivo}\", \"tipo\": \"senderismo\" }}"
+            idx = text.rfind(']')
+            before = text[:idx].rstrip('\n')
+            after = text[idx:]
+            has_items = bool(re.search(r'\{[^}]*\}', before))
+            if has_items:
+              insert = f"\n,\n{entry}\n"
+            else:
+              insert = f"\n{entry}\n"
+            text = before + insert + after
+            existing.add(archivo)
+
+          with open(rutas_json, 'w', encoding='utf-8') as f:
+            f.write(text)
+          PY
 
       - name: Configurar Git y Subir cambios
         run: |
