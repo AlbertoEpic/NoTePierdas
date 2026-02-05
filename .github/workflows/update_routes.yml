@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'rutas/*.gpx' # Se activa solo si subes tracks nuevos
+  workflow_dispatch:
 
 permissions:
   contents: write
