@@ -1,6 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
+const baseUrl = import.meta.env.BASE_URL;
+const base = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
+
 const videos = [
 	{
 		title: 'Bajar el COLESTEROL con FÁRMACOS NO mejorará tu Salud',
@@ -325,7 +328,7 @@ const videos = [
 			<p class="subtitle">
 				Listado actualizado con enlaces directos.
 			</p>
-			<a class="back" href="/">Volver a la portada</a>
+			<a class="back" href={`${base}`}>Volver a la portada</a>
 		</header>
 
 		<section class="grid">

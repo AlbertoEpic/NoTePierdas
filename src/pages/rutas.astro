@@ -1,5 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+const baseUrl = import.meta.env.BASE_URL;
+const baseRoot = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
+const base = baseRoot;
 ---
 
 <Layout>
@@ -35,6 +39,10 @@ import Layout from '../layouts/Layout.astro';
 	<script is:inline src="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.js"></script>
 
 	<script is:inline>
+		const base = ${JSON.stringify(base)};
+		const baseRoot = base.endsWith('/') ? base : `${base}/`;
+		const toBasePath = (path) => `${baseRoot}${path.replace(/^\/+/, '')}`;
+
 		const map = L.map('map').setView([40.41, -3.7], 6);
 		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
@@ -48,7 +56,7 @@ import Layout from '../layouts/Layout.astro';
 			return colores[tipo] || '#95a5a6';
 		}
 
-		fetch('/ntp/rutas.json')
+		fetch(toBasePath('ntp/rutas.json'))
 			.then((response) => response.json())
 			.then((misRutas) => {
 				misRutas.forEach((ruta) => {
@@ -58,7 +66,7 @@ import Layout from '../layouts/Layout.astro';
 					card.innerHTML = `<strong>${ruta.nombre}</strong><br><small>${ruta.tipo.toUpperCase()}</small>`;
 					document.getElementById('lista-rutas').appendChild(card);
 
-					const track = new L.GPX(ruta.archivo, {
+					const track = new L.GPX(toBasePath(ruta.archivo), {
 						async: true,
 						polyline_options: { color: getColor(ruta.tipo), weight: 3, opacity: 0.75 },
 						marker_options: { startIconUrl: null, endIconUrl: null },
