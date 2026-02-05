@@ -5,6 +5,9 @@ on:
     paths:
       - 'rutas/*.gpx' # Se activa solo si subes tracks nuevos
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
