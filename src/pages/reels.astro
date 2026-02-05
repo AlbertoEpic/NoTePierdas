@@ -1,8 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
-const baseUrl = import.meta.env.BASE_URL;
-const base = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
+const toBasePath = (path = '') => `/${path.replace(/^\/+/, '')}`;
 
 const reels = [
 	{
@@ -222,7 +221,7 @@ const reels = [
 			<p class="eyebrow">Directorio</p>
 			<h1>Reels de Instagram</h1>
 			<p class="subtitle">Listado con enlaces directos a los reels.</p>
-			<a class="back" href={`${base}`}>Volver a la portada</a>
+			<a class="back" href="/">Volver a la portada</a>
 		</header>
 
 		<section class="grid">
@@ -238,7 +237,7 @@ const reels = [
 								loading="lazy"
 								decoding="async"
 								referrerpolicy="no-referrer"
-								onerror={`this.src='${base}instagram-placeholder.svg'`}
+								onerror="this.src='/instagram-placeholder.svg'"
 							/>
 						</a>
 						<div class="card-header">
