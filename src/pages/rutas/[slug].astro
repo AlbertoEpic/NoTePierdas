@@ -1,0 +1,220 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import fs from 'node:fs/promises';
+
+const base = import.meta.env.BASE_URL;
+const fallbackBase = '/NoTePierdas';
+const baseRoot = (base || fallbackBase).replace(/\/+$/, '');
+const normalizedBase = baseRoot === '/' ? '' : baseRoot;
+const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}`;
+
+export async function getStaticPaths() {
+	const slugify = (texto = '') =>
+		texto
+			.toLowerCase()
+			.normalize('NFD')
+			.replace(/[\u0300-\u036f]/g, '')
+			.replace(/[^a-z0-9]+/g, '-')
+			.replace(/(^-|-$)+/g, '');
+
+	const rutasFileUrl = new URL('../../../public/ntp/rutas.json', import.meta.url);
+	const rutas = JSON.parse(await fs.readFile(rutasFileUrl, 'utf-8'));
+	return rutas.map((ruta) => ({
+		params: { slug: slugify(ruta.nombre) },
+		props: { ruta },
+	}));
+}
+
+const { ruta } = Astro.props;
+const title = ruta?.nombre ?? 'Ruta';
+const typeLabel = String(ruta?.tipo ?? 'ruta');
+---
+
+<Layout>
+	<Fragment slot="head">
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+		<link rel="stylesheet" href="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.css" />
+	</Fragment>
+
+	<main class="ruta-page">
+		<section class="hero ruta-hero">
+			<p class="eyebrow">Ruta GPS</p>
+			<h1>{title}</h1>
+			<p class="subtitle">Mapa individual con perfil de alturas.</p>
+			<div class="ruta-actions">
+				<a class="back" href={toBasePath('rutas')}>Volver al mapa</a>
+				<span class="ruta-tag">{typeLabel.toUpperCase()}</span>
+			</div>
+		</section>
+
+		<section class="ruta-body">
+			<div class="ruta-map-shell">
+				<div class="ruta-stats">
+					<div>Distancia: <span id="ruta-dist">0</span> km</div>
+					<div>Desnivel: <span id="ruta-elev">0</span> m</div>
+				</div>
+				<div id="map" class="ruta-map"></div>
+			</div>
+
+			<div class="elevation-shell">
+				<h2>Perfil de alturas</h2>
+				<div id="elevation" class="elevation"></div>
+			</div>
+		</section>
+	</main>
+
+	<script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+	<script is:inline src="https://unpkg.com/leaflet-gpx/gpx.js"></script>
+	<script is:inline src="https://unpkg.com/@raruto/leaflet-elevation/dist/leaflet-elevation.js"></script>
+
+	<script is:inline define:vars={{ baseRoot, ruta }}>
+		const fallbackBase = '/NoTePierdas';
+		const baseRootValue = baseRoot || fallbackBase;
+		const normalizedBase = baseRootValue === '/' ? '' : baseRootValue.replace(/\/+$/, '');
+		const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}`;
+
+		const map = L.map('map', { preferCanvas: true }).setView([40.41, -3.7], 6);
+		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+		const getColor = (tipo) => {
+			const colores = {
+				bici: '#3498db',
+				btt: '#3498db',
+				senderismo: '#27ae60',
+				running: '#e67e22',
+				skimo: '#a855f7',
+			};
+			return colores[(tipo || '').toLowerCase()] || '#95a5a6';
+		};
+
+		const elevation = L.control
+			.elevation({
+				position: 'bottomright',
+				theme: 'lime-theme',
+				detached: true,
+				elevationDiv: '#elevation',
+				collapsed: false,
+			})
+			.addTo(map);
+
+		const gpxUrl = toBasePath(ruta.archivo);
+		new L.GPX(gpxUrl, {
+			async: true,
+			polyline_options: { color: getColor(ruta.tipo), weight: 4, opacity: 0.85 },
+			marker_options: { startIconUrl: null, endIconUrl: null },
+		})
+			.on('loaded', function (e) {
+				const g = e.target;
+				const distEl = document.getElementById('ruta-dist');
+				const elevEl = document.getElementById('ruta-elev');
+
+				if (distEl) {
+					distEl.textContent = (g.get_distance() / 1000).toFixed(1);
+				}
+				if (elevEl) {
+					elevEl.textContent = g.get_elevation_gain().toFixed(0);
+				}
+
+				map.fitBounds(g.getBounds(), { padding: [40, 40] });
+			})
+			.on('addline', function (e) {
+				elevation.addData(e.line);
+			})
+			.addTo(map);
+	</script>
+</Layout>
+
+<style>
+	.ruta-page {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 2.5rem 1.5rem 4rem;
+		display: grid;
+		gap: 2rem;
+	}
+
+	.ruta-hero {
+		display: grid;
+		gap: 1rem;
+	}
+
+	.ruta-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+		align-items: center;
+	}
+
+	.ruta-tag {
+		padding: 0.4rem 0.9rem;
+		border-radius: 999px;
+		border: 1px solid rgba(212, 175, 55, 0.45);
+		color: var(--gold-soft);
+		background: rgba(212, 175, 55, 0.12);
+		font-weight: 700;
+		font-size: 0.9rem;
+		letter-spacing: 0.05em;
+	}
+
+	.ruta-body {
+		display: grid;
+		gap: 1.5rem;
+	}
+
+	.ruta-map-shell {
+		position: relative;
+		border-radius: 24px;
+		overflow: hidden;
+		border: 1px solid rgba(148, 163, 184, 0.25);
+		box-shadow: 0 30px 60px rgba(2, 6, 23, 0.55);
+		min-height: 420px;
+	}
+
+	.ruta-map {
+		width: 100%;
+		height: min(70svh, 700px);
+		min-height: 420px;
+	}
+
+	.ruta-stats {
+		position: absolute;
+		z-index: 1000;
+		top: 16px;
+		right: 16px;
+		background: rgba(6, 10, 19, 0.85);
+		color: #f8fafc;
+		padding: 0.9rem 1rem;
+		border-radius: 14px;
+		box-shadow: 0 10px 24px rgba(2, 6, 23, 0.4);
+		display: grid;
+		gap: 0.35rem;
+		font-size: 0.95rem;
+	}
+
+	.elevation-shell {
+		background: rgba(9, 13, 23, 0.7);
+		border: 1px solid rgba(148, 163, 184, 0.2);
+		border-radius: 20px;
+		padding: 1.5rem;
+		box-shadow: 0 24px 50px rgba(2, 6, 23, 0.5);
+	}
+
+	.elevation-shell h2 {
+		margin: 0 0 1rem;
+		font-size: 1.2rem;
+	}
+
+	.elevation {
+		min-height: 220px;
+	}
+
+	@media (max-width: 960px) {
+		.ruta-page {
+			padding: 2rem 1.25rem 3rem;
+		}
+
+		.ruta-map {
+			height: 60svh;
+		}
+	}
+</style>

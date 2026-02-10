@@ -51,17 +51,34 @@ const baseRoot = base.replace(/\/+$/, '');
 		let count = 0;
 		const gpxGroup = L.featureGroup().addTo(map);
 
+		const slugify = (texto = '') =>
+			texto
+				.toLowerCase()
+				.normalize('NFD')
+				.replace(/[\u0300-\u036f]/g, '')
+				.replace(/[^a-z0-9]+/g, '-')
+				.replace(/(^-|-$)+/g, '');
+
 		function getColor(tipo) {
-			const colores = { bici: '#3498db', senderismo: '#27ae60', running: '#e67e22', skimo: '#a855f7' };
-			return colores[tipo] || '#95a5a6';
+			const colores = {
+				bici: '#3498db',
+				btt: '#3498db',
+				senderismo: '#27ae60',
+				running: '#e67e22',
+				skimo: '#a855f7',
+			};
+			const key = (tipo || '').toLowerCase();
+			return colores[key] || '#95a5a6';
 		}
 
 		fetch(toBasePath('ntp/rutas.json'))
 			.then((response) => response.json())
 			.then((misRutas) => {
 				misRutas.forEach((ruta) => {
-					const card = document.createElement('div');
+					const detailUrl = toBasePath(`rutas/${slugify(ruta.nombre)}`);
+					const card = document.createElement('a');
 					card.className = 'ruta-card';
+					card.href = detailUrl;
 					card.style.borderLeftColor = getColor(ruta.tipo);
 					card.innerHTML = `<strong>${ruta.nombre}</strong><br><small>${ruta.tipo.toUpperCase()}</small>`;
 					document.getElementById('lista-rutas').appendChild(card);
@@ -87,10 +104,9 @@ const baseRoot = base.replace(/\/+$/, '');
 						})
 						.addTo(gpxGroup);
 
-					card.onclick = () => {
-						map.fitBounds(track.getBounds(), { padding: [50, 50] });
-						track.bindPopup(`<b>${ruta.nombre}</b>`).openPopup();
-					};
+					track.on('click', () => {
+						window.location.href = detailUrl;
+					});
 				});
 			})
 			.catch((error) => console.error('Error cargando el archivo JSON:', error));
@@ -134,6 +150,7 @@ const baseRoot = base.replace(/\/+$/, '');
 	}
 
 	.ruta-card {
+		display: block;
 		background: rgba(27, 41, 70, 0.6);
 		padding: 0.85rem 0.9rem;
 		border-radius: 12px;
@@ -141,6 +158,8 @@ const baseRoot = base.replace(/\/+$/, '');
 		transition: 0.2s ease;
 		border-left: 4px solid transparent;
 		box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.2);
+		color: inherit;
+		text-decoration: none;
 	}
 
 	.ruta-card:hover {
