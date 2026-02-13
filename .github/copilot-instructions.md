@@ -1,0 +1,9 @@
+- [x] Verify that the copilot-instructions.md file in the .github directory is created. Created.
+- [x] Clarify Project Requirements. Astro landing page, project name MINIPLANETAS - SQLP, new folder.
+- [x] Scaffold the Project. Astro minimal scaffold in MINIPLANETAS.
+- [x] Customize the Project. Landing page built in src/pages/index.astro.
+- [x] Install Required Extensions. None required.
+- [x] Compile the Project. npm install and npm run build succeeded.
+- [x] Create and Run Task. Not needed for this project.
+- [x] Launch the Project. npm run dev started.
+- [x] Ensure Documentation is Complete. README updated and this file cleaned.
