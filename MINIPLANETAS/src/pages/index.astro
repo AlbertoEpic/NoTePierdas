@@ -1,12 +1,12 @@
 ---
-import { getPlanets } from '../lib/planets';
+import { planetData } from '../data/planets';
 
 const site = {
 	title: 'MINIPLANETAS - SQLP',
 	tagline: 'Micro mundos para explorar',
 	lead: 'Un observatorio creativo para ideas pequenas pero intensas. Cada planeta es una historia, cada orbita una ruta.',
 };
-const planets = await getPlanets();
+const planets = planetData;
 const planetCount = planets.length;
 ---
 

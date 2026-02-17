@@ -6,8 +6,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro",
-    "seed:strapi": "node ./scripts/seed-strapi.mjs"
+    "astro": "astro"
   },
   "dependencies": {
     "astro": "^5.17.1"
