@@ -1,8 +1,9 @@
-﻿export const planetData = [
+﻿const basePlanetData = [
 	{
 		slug: 'planeta-alquezar',
 		name: 'Planeta Alquézar',
 		image: '/planets/Planeta_Alquézar.jpg',
+		image360: '/pano360/PANO_SanMiguel-Alquézar.jpg',
 		description:
 			'Fortaleza luminosa en roca caliza, pensada para ideas con pulso histórico.',
 		tone: 'Cobalto brillante',
@@ -340,4 +341,9 @@
 		size: 'Variable',
 	},
 ];
+
+export const planetData = basePlanetData.map((planet) => ({
+	...planet,
+	image360: planet.image360 ?? planet.image,
+}));
 
