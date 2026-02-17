@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Planeta Alquézar",
+    "slug": "planeta-alquezar",
+    "description": "Fortaleza luminosa en roca caliza, pensada para ideas con pulso histórico.",
+    "tone": "Cobalto brillante",
+    "orbit": "Órbita 12",
+    "size": "Compacto",
+    "order": 1,
+    "imageUrl": "/planets/Planeta_Alquézar.jpg"
+  },
+  {
+    "name": "Planeta Bejenado",
+    "slug": "planeta-bejenado",
+    "description": "Relieve volcánico con energía ascendente, ideal para conceptos que requieren impulso.",
+    "tone": "Magenta iónico",
+    "orbit": "Órbita 18",
+    "size": "Denso",
+    "order": 2,
+    "imageUrl": "/planets/Planeta_Bejenado.jpg"
+  },
+  {
+    "name": "Planeta Castillo Saumur",
+    "slug": "planeta-castillosaumur",
+    "description": "Arquitectura fluvial y elegancia de piedra para narrativas clásicas y claras.",
+    "tone": "Arena polar",
+    "orbit": "Órbita 06",
+    "size": "Ligero",
+    "order": 3,
+    "imageUrl": "/planets/Planeta_CastilloSaumur.jpg"
+  },
+  {
+    "name": "Planeta Comodoto",
+    "slug": "planeta-comodoto",
+    "description": "Textura tropical y ritmo cálido, pensado para proyectos de alto contraste.",
+    "tone": "Verde aurora",
+    "orbit": "Órbita 23",
+    "size": "Dual",
+    "order": 4,
+    "imageUrl": "/planets/Planeta_Comodoto.jpg"
+  },
+  {
+    "name": "Planeta Dune du Pilat",
+    "slug": "planeta-dunedupilat",
+    "description": "Dunas doradas y horizonte abierto; perfecto para propuestas expansivas.",
+    "tone": "Oro sedimentado",
+    "orbit": "Órbita 29",
+    "size": "Extenso",
+    "order": 5,
+    "imageUrl": "/planets/Planeta_DuneDuPilat.jpg"
+  }
+]

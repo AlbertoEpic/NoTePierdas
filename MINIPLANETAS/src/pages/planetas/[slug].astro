@@ -1,8 +1,9 @@
 ---
-import { planetData } from '../../data/planets';
+import { getPlanets } from '../../lib/planets';
 
-export function getStaticPaths() {
-	return planetData.map((planet) => ({
+export async function getStaticPaths() {
+	const planets = await getPlanets();
+	return planets.map((planet) => ({
 		params: { slug: planet.slug },
 		props: { planet },
 	}));
