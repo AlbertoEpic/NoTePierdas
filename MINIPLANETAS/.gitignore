@@ -23,6 +23,11 @@ pnpm-debug.log*
 # Windows-specific files
 desktop.ini
 **/desktop.ini
+Thumbs.db
+ehthumbs.db
+Icon?
+$RECYCLE.BIN/
+System Volume Information/
 
 # jetbrains setting folder
 .idea/
