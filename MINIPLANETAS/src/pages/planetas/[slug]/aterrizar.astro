@@ -1,5 +1,7 @@
 ---
 import { planetData } from '../../../data/planets';
+import { existsSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 
 export function getStaticPaths() {
 	return planetData.map((planet) => ({
@@ -10,7 +12,15 @@ export function getStaticPaths() {
 
 const { planet } = Astro.props;
 const imageParam = Astro.url.searchParams.get('img');
-const sphericalImage = imageParam || planet.image360 || planet.image;
+
+const isValidPanoPath = (path) =>
+	Boolean(path?.startsWith('/pano360/')) &&
+		existsSync(fileURLToPath(new URL(`../../../../public${path}`, import.meta.url)));
+
+const planetPanoImage = isValidPanoPath(planet.image360) ? planet.image360 : null;
+const queryPanoImage = isValidPanoPath(imageParam) ? imageParam : null;
+const sphericalImage = queryPanoImage || planetPanoImage || null;
+const canRenderPanorama = Boolean(sphericalImage);
 ---
 
 <html lang="es">
@@ -18,6 +28,7 @@ const sphericalImage = imageParam || planet.image360 || planet.image;
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
 		<title>{planet.name} | Aterrizaje 360°</title>
+		{!canRenderPanorama && <meta http-equiv="refresh" content={`0;url=/planetas/${planet.slug}`} />}
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css" />
 		<style>
 			:root {
@@ -77,21 +88,33 @@ const sphericalImage = imageParam || planet.image360 || planet.image;
 		</style>
 	</head>
 	<body>
-		<div class="hud">
-			<button type="button" data-fullscreen>Pantalla completa</button>
-			<a href={`/planetas/${planet.slug}`}>Volver a la ficha</a>
-		</div>
-		<div class="viewer" data-panorama={sphericalImage}>
-			<div id="pannellum-viewer" aria-label={`Vista esférica 360 de ${planet.name}`}></div>
-		</div>
-		<div class="error" data-error>
-			<div>
-				<p>No se pudo cargar el visor 360.</p>
-				<p>Comprueba que la imagen equirectangular sea válida y vuelve a intentarlo.</p>
+		{canRenderPanorama ? (
+			<>
+				<div class="hud">
+					<button type="button" data-fullscreen>Pantalla completa</button>
+					<a href={`/planetas/${planet.slug}`}>Volver a la ficha</a>
+				</div>
+				<div class="viewer" data-panorama={sphericalImage}>
+					<div id="pannellum-viewer" aria-label={`Vista esférica 360 de ${planet.name}`}></div>
+				</div>
+				<div class="error" data-error>
+					<div>
+						<p>No se pudo cargar el visor 360.</p>
+						<p>Comprueba que la imagen equirectangular sea válida y vuelve a intentarlo.</p>
+					</div>
+				</div>
+			</>
+		) : (
+			<div class="error is-visible">
+				<div>
+					<p>Este planeta no tiene imagen equirectangular disponible.</p>
+					<p><a href={`/planetas/${planet.slug}`}>Volver a la ficha</a></p>
+				</div>
 			</div>
-		</div>
+		)}
 
-		<script is:inline>
+		{canRenderPanorama && (
+			<script is:inline>
 			const viewerHost = document.querySelector('.viewer');
 			const panoramaSrc = viewerHost?.dataset.panorama || '';
 			const normalizedPanoramaSrc = encodeURI(panoramaSrc);
@@ -197,6 +220,7 @@ const sphericalImage = imageParam || planet.image360 || planet.image;
 			window.addEventListener('load', () => {
 				goFullscreen();
 			});
-		</script>
+			</script>
+		)}
 	</body>
 </html>

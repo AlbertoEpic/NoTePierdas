@@ -69,8 +69,13 @@ const sizes = [...new Set(planets.map((planet) => planet.size))].sort((a, b) =>
 						data-description={planet.description.toLowerCase()}
 						data-tone={planet.tone}
 						data-size={planet.size}
+						data-href={`/planetas/${planet.slug}`}
+						tabindex="0"
+						title="Ver ficha"
 					>
-						<img src={planet.image} alt={`Mini planeta ${planet.name}`} loading="lazy" />
+						<a href={`/planetas/${planet.slug}`} aria-label={`Ver ficha de ${planet.name}`}>
+							<img src={planet.image} alt={`Mini planeta ${planet.name}`} loading="lazy" />
+						</a>
 						<div>
 							<h2>{planet.name}</h2>
 							<p>{planet.description}</p>
@@ -79,7 +84,6 @@ const sizes = [...new Set(planets.map((planet) => planet.size))].sort((a, b) =>
 								<span>{planet.orbit}</span>
 								<span>{planet.size}</span>
 							</div>
-							<a href={`/planetas/${planet.slug}`}>Ver ficha</a>
 						</div>
 					</article>
 				))}
@@ -90,15 +94,21 @@ const sizes = [...new Set(planets.map((planet) => planet.size))].sort((a, b) =>
 			const textInput = document.querySelector('#filter-text');
 			const toneSelect = document.querySelector('#filter-tone');
 			const sizeSelect = document.querySelector('#filter-size');
+			const catalogGrid = document.querySelector('#catalog-grid');
 			const cards = Array.from(document.querySelectorAll('#catalog-grid .card'));
+			const interactiveSelector = 'a, button, input, select, textarea';
 
 			const runFilters = () => {
-				const text = (textInput?.value || '').toLowerCase().trim();
+				const text = textInput?.value.toLowerCase().trim() || '';
 				const tone = toneSelect?.value || '';
 				const size = sizeSelect?.value || '';
+				const hasActiveFilters = Boolean(text || tone || size);
+				catalogGrid?.classList.toggle('is-filtered', hasActiveFilters);
 
 				cards.forEach((card) => {
-					const matchesText = !text || card.dataset.name.includes(text) || card.dataset.description.includes(text);
+					const name = card.dataset.name || '';
+					const description = card.dataset.description || '';
+					const matchesText = !text || name.includes(text) || description.includes(text);
 					const matchesTone = !tone || card.dataset.tone === tone;
 					const matchesSize = !size || card.dataset.size === size;
 					card.style.display = matchesText && matchesTone && matchesSize ? '' : 'none';
@@ -108,6 +118,30 @@ const sizes = [...new Set(planets.map((planet) => planet.size))].sort((a, b) =>
 			textInput?.addEventListener('input', runFilters);
 			toneSelect?.addEventListener('change', runFilters);
 			sizeSelect?.addEventListener('change', runFilters);
+
+			cards.forEach((card) => {
+				const navigateToCard = () => {
+					const href = card.dataset.href;
+					if (href) {
+						window.location.assign(href);
+					}
+				};
+
+				card.addEventListener('click', (event) => {
+					if (event.target.closest(interactiveSelector)) {
+						return;
+					}
+					navigateToCard();
+				});
+
+				card.addEventListener('keydown', (event) => {
+					if (event.key !== 'Enter' && event.key !== ' ') {
+						return;
+					}
+					event.preventDefault();
+					navigateToCard();
+				});
+			});
 		</script>
 	</body>
 </html>
@@ -171,12 +205,29 @@ const sizes = [...new Set(planets.map((planet) => planet.size))].sort((a, b) =>
 		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 		gap: 1rem;
 	}
+	.grid.is-filtered {
+		grid-template-columns: repeat(auto-fill, minmax(250px, 320px));
+		justify-content: start;
+	}
 	.card {
 		background: rgba(18, 12, 32, .78);
 		border: 1px solid var(--stroke);
 		border-radius: 1rem;
 		overflow: hidden;
+		cursor: pointer;
+		transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
 	}
+	.card:hover {
+		transform: translateY(-2px);
+		border-color: rgba(77, 208, 225, .55);
+		box-shadow: 0 10px 22px rgba(6, 4, 14, .38);
+	}
+	.card:focus-visible {
+		outline: 2px solid var(--accent-2);
+		outline-offset: 3px;
+		border-color: rgba(77, 208, 225, .7);
+	}
+	.card > a { display: block; }
 	.card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; display: block; }
 	.card > div { padding: .9rem; display: grid; gap: .5rem; }
 	.card h2 { margin: 0; font-size: 1rem; }
@@ -187,14 +238,5 @@ const sizes = [...new Set(planets.map((planet) => planet.size))].sort((a, b) =>
 		padding: .2rem .48rem;
 		border: 1px solid var(--stroke);
 		border-radius: 999px;
-	}
-	.card a {
-		justify-self: start;
-		font-size: .85rem;
-		padding: .4rem .72rem;
-		border-radius: 999px;
-		background: linear-gradient(120deg, var(--accent), var(--accent-2));
-		color: #1b0d2b;
-		font-weight: 600;
 	}
 </style>

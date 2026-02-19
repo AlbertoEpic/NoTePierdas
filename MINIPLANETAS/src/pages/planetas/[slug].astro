@@ -1,5 +1,7 @@
 ---
 import { planetData } from '../../data/planets';
+import { existsSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 
 export function getStaticPaths() {
 	return planetData.map((planet) => ({
@@ -30,7 +32,21 @@ const planetProfiles = {
 		coordinates: '47.2597, -0.0786',
 		atmosphere: ['Urbano', 'Histórico', 'Soleado'],
 		discoveryDate: '2024-04-11',
-		equipment: 'DJI Mini 4 Pro',
+		equipment: 'GoPro Hero 7 Black',
+	},
+	'planeta-castilloloarre': {
+		location: 'Loarre, España',
+		coordinates: '42.3247, -0.6247',
+		atmosphere: ['Natural', 'Histórico', 'Soleado'],
+		discoveryDate: '2026-02-18',
+		equipment: 'DJI Mini 5 Pro',
+	},
+	'planeta-vadiello': {
+		location: 'Vadiello, Huesca',
+		coordinates: '42.2900, -0.2000',
+		atmosphere: ['Natural'],
+		discoveryDate: '2021-01-24',
+		equipment: 'GoPro Hero 7 Black',
 	},
 };
 
@@ -48,7 +64,11 @@ const discoveryDate = new Date(profile.discoveryDate).toLocaleDateString('es-ES'
 	month: 'long',
 	year: 'numeric',
 });
-const sphericalImage = planet.image360 ?? planet.image;
+const sphericalImage = planet.image360;
+const hasEquirectangularImage = Boolean(
+	sphericalImage?.startsWith('/pano360/') &&
+		existsSync(fileURLToPath(new URL(`../../../public${sphericalImage}`, import.meta.url)))
+);
 ---
 
 <html lang="es">
@@ -118,7 +138,9 @@ const sphericalImage = planet.image360 ?? planet.image;
 				</div>
 				<div class="actions-primary">
 					<button type="button" class="highlight" data-open-fullscreen>Ver imagen a pantalla completa</button>
-					<a class="highlight" href={`/planetas/${planet.slug}/aterrizar?img=${encodeURIComponent(sphericalImage)}`} target="_blank" rel="noopener noreferrer">Aterrizar en el planeta</a>
+					{hasEquirectangularImage && (
+						<a class="highlight" href={`/planetas/${planet.slug}/aterrizar?img=${encodeURIComponent(sphericalImage)}`} target="_blank" rel="noopener noreferrer">Aterrizar en el planeta</a>
+					)}
 				</div>
 				<div class="actions-secondary">
 					<a class="solid" href="/catalogo">Volver al catálogo</a>
