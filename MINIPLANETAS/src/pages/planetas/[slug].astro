@@ -11,6 +11,16 @@ export function getStaticPaths() {
 }
 
 const { planet } = Astro.props;
+const basePath = import.meta.env.BASE_URL;
+const normalizedBase =
+	basePath === '/' ? '' : `/${basePath.replace(/^\/+|\/+$/g, '')}`;
+const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}`;
+const toAssetPath = (path = '') =>
+	path.startsWith('/') ? `${normalizedBase}${path}` : `${normalizedBase}/${path}`;
+const toPublicAssetPath = (path = '') =>
+	typeof path === 'string' && normalizedBase && path.startsWith(`${normalizedBase}/`)
+		? path.slice(normalizedBase.length)
+		: path;
 
 const planetProfiles = {
 	'planeta-alquezar': {
@@ -65,17 +75,18 @@ const discoveryDate = new Date(profile.discoveryDate).toLocaleDateString('es-ES'
 	year: 'numeric',
 });
 const sphericalImage = planet.image360;
+const sphericalPublicPath = sphericalImage ? toPublicAssetPath(sphericalImage) : null;
 const hasEquirectangularImage = Boolean(
-	sphericalImage?.startsWith('/pano360/') &&
-		existsSync(fileURLToPath(new URL(`../../../public${sphericalImage}`, import.meta.url)))
+	sphericalPublicPath?.startsWith('/pano360/') &&
+		existsSync(fileURLToPath(new URL(`../../../public${sphericalPublicPath}`, import.meta.url)))
 );
 ---
 
 <html lang="es">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
+		<link rel="icon" type="image/svg+xml" href={toBasePath('favicon.svg')} />
+		<link rel="icon" href={toBasePath('favicon.ico')} />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{planet.name} | MINIPLANETAS</title>
@@ -88,17 +99,17 @@ const hasEquirectangularImage = Boolean(
 	</head>
 	<body>
 		<header class="top">
-			<a class="brand" href="/">MINIPLANETAS</a>
+			<a class="brand" href={toBasePath('')}>MINIPLANETAS</a>
 			<nav class="top-nav">
-				<a href="/">El Universo</a>
-				<a href="/catalogo">El Catálogo</a>
-				<a href="/sobre">Técnica</a>
+				<a href={toBasePath('')}>El Universo</a>
+				<a href={toBasePath('catalogo')}>El Catálogo</a>
+				<a href={toBasePath('sobre')}>Técnica</a>
 			</nav>
 		</header>
 
 		<main class="planet-view">
 			<section class="visual">
-				<img src={planet.image} alt={`Vista grande de ${planet.name}`} loading="eager" data-main-image />
+				<img src={toAssetPath(planet.image)} alt={`Vista grande de ${planet.name}`} loading="eager" data-main-image />
 			</section>
 
 			<section class="story">
@@ -139,12 +150,12 @@ const hasEquirectangularImage = Boolean(
 				<div class="actions-primary">
 					<button type="button" class="highlight" data-open-fullscreen>Ver imagen a pantalla completa</button>
 					{hasEquirectangularImage && (
-						<a class="highlight" href={`/planetas/${planet.slug}/aterrizar?img=${encodeURIComponent(sphericalImage)}`} target="_blank" rel="noopener noreferrer">Aterrizar en el planeta</a>
+						<a class="highlight" href={toBasePath(`planetas/${planet.slug}/aterrizar?img=${encodeURIComponent(sphericalPublicPath)}`)} target="_blank" rel="noopener noreferrer">Aterrizar en el planeta</a>
 					)}
 				</div>
 				<div class="actions-secondary">
-					<a class="solid" href="/catalogo">Volver al catálogo</a>
-					<a class="ghost" href="/">Ver muro universo</a>
+					<a class="solid" href={toBasePath('catalogo')}>Volver al catálogo</a>
+					<a class="ghost" href={toBasePath('')}>Ver muro universo</a>
 				</div>
 			</section>
 		</main>
@@ -152,7 +163,7 @@ const hasEquirectangularImage = Boolean(
 		<div class="viewer" data-viewer aria-hidden="true">
 			<button class="viewer-close" type="button" aria-label="Cerrar visor" data-close-viewer>✕</button>
 			<div class="viewer-stage" data-viewer-stage>
-				<img src={planet.image} alt={`Imagen completa de ${planet.name}`} data-viewer-image draggable="false" />
+				<img src={toAssetPath(planet.image)} alt={`Imagen completa de ${planet.name}`} data-viewer-image draggable="false" />
 			</div>
 		</div>
 

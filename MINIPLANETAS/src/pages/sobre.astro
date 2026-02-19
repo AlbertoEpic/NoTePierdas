@@ -1,8 +1,15 @@
+---
+const basePath = import.meta.env.BASE_URL;
+const normalizedBase =
+	basePath === '/' ? '' : `/${basePath.replace(/^\/+|\/+$/g, '')}`;
+const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}`;
+---
+
 <html lang="es">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
+		<link rel="icon" type="image/svg+xml" href={toBasePath('favicon.svg')} />
+		<link rel="icon" href={toBasePath('favicon.ico')} />
 		<meta name="viewport" content="width=device-width" />
 		<title>MINIPLANETAS | Sobre el Creador y Técnica</title>
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -14,10 +21,10 @@
 	</head>
 	<body>
 		<header class="top">
-			<a class="brand" href="/">MINIPLANETAS</a>
+			<a class="brand" href={toBasePath('')}>MINIPLANETAS</a>
 			<nav class="top-nav">
-				<a href="/">El Universo</a>
-				<a href="/catalogo">El Catálogo</a>
+				<a href={toBasePath('')}>El Universo</a>
+				<a href={toBasePath('catalogo')}>El Catálogo</a>
 			</nav>
 		</header>
 
@@ -34,7 +41,7 @@
 				reencuadre para resaltar volumen y atmósfera. El objetivo no es solo documentar un
 				lugar, sino transformarlo en una pieza visual con identidad propia.
 			</p>
-			<a class="back" href="/catalogo">Ir al catálogo</a>
+			<a class="back" href={toBasePath('catalogo')}>Ir al catálogo</a>
 		</main>
 	</body>
 </html>
