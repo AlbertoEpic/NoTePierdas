@@ -1,9 +1,8 @@
 ---
 const base = import.meta.env.BASE_URL;
-const fallbackBase = '/NoTePierdas';
-const resolvedBase = base && base !== '/' ? base : fallbackBase;
-const baseRoot = resolvedBase.replace(/\/+$/, '');
-const normalizedBase = baseRoot === '/' ? '' : baseRoot;
+const normalizedBase = base === '/'
+	? ''
+	: `/${(base || '/').replace(/^\/+|\/+$/g, '')}`;
 const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}`;
 ---
 
