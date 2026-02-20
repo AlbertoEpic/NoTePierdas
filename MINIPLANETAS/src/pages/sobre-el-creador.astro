@@ -1,0 +1,111 @@
+---
+const basePath = import.meta.env.BASE_URL;
+const normalizedBase =
+	basePath === '/' ? '' : `/${basePath.replace(/^\/+|\/+$/g, '')}`;
+const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}`;
+---
+
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href={toBasePath('favicon.svg')} />
+		<link rel="icon" href={toBasePath('favicon.ico')} />
+		<meta name="viewport" content="width=device-width" />
+		<title>MINIPLANETAS | Sobre el creador</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Space+Grotesk:wght@400;500;600&display=swap"
+		/>
+	</head>
+	<body>
+		<header class="top">
+			<a class="brand" href={toBasePath('')}>MINIPLANETAS</a>
+			<nav class="top-nav">
+				<a href={toBasePath('catalogo')}>El Catálogo</a>
+				<a href={toBasePath('como-nace-un-mini-planeta')}>Cómo nace un mini-planeta</a>
+			</nav>
+		</header>
+
+		<main class="container">
+			<p class="eyebrow">Sobre el creador</p>
+			<h1>La mirada detrás de cada órbita</h1>
+			<p>
+				MINIPLANETAS nace de una forma de caminar el paisaje con calma: observar, esperar la
+				luz justa y rescatar detalles que suelen pasar desapercibidos.
+			</p>
+			<p>
+				Cada escena se trabaja para conservar su atmósfera original y, al mismo tiempo,
+				convertirse en un pequeño mundo que invita a detenerse, imaginar y volver a mirar.
+			</p>
+			<p>
+				Este proyecto une sensibilidad visual y técnica fotográfica para crear una colección
+				donde cada mini-planeta tiene identidad propia.
+			</p>
+			<div class="actions">
+				<a class="back" href={toBasePath('')}>Volver a portada</a>
+				<a class="back secondary" href={toBasePath('catalogo')}>Ir al catálogo</a>
+			</div>
+		</main>
+	</body>
+</html>
+
+<style>
+	:global(:root) {
+		--bg-1: #07040f;
+		--bg-2: #0e162e;
+		--bg-3: #1a0936;
+		--text: #f7f2ff;
+		--muted: rgba(247, 242, 255, 0.78);
+		--accent: #ffb74d;
+		--accent-2: #4dd0e1;
+		--stroke: rgba(255, 255, 255, 0.12);
+	}
+	:global(*) { box-sizing: border-box; }
+	:global(body) {
+		margin: 0;
+		font-family: 'Space Grotesk', sans-serif;
+		color: var(--text);
+		background: linear-gradient(150deg, var(--bg-2), var(--bg-1) 60%, var(--bg-3));
+	}
+	:global(a) { color: inherit; text-decoration: none; }
+
+	.top {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 1.2rem 6vw;
+		position: sticky;
+		top: 0;
+		background: linear-gradient(180deg, rgba(7, 4, 15, 0.92), rgba(7, 4, 15, 0.5));
+		backdrop-filter: blur(14px);
+		border-bottom: 1px solid var(--stroke);
+	}
+	.brand { font-family: 'Fraunces', serif; letter-spacing: .22em; text-transform: uppercase; font-size: .9rem; }
+	.top-nav { display: flex; gap: 1.2rem; }
+
+	.container {
+		max-width: 52rem;
+		padding: 2.2rem 6vw 4rem;
+		display: grid;
+		gap: 1rem;
+	}
+	.eyebrow { margin: 0; color: var(--accent); letter-spacing: .25em; text-transform: uppercase; font-size: .72rem; }
+	h1 { margin: 0; font-size: clamp(2rem, 3.2vw, 3rem); font-family: 'Fraunces', serif; }
+	p { margin: 0; color: var(--muted); line-height: 1.7; }
+	.actions { display: flex; gap: .7rem; flex-wrap: wrap; margin-top: .5rem; }
+	.back {
+		justify-self: start;
+		padding: .6rem 1rem;
+		border-radius: 999px;
+		background: linear-gradient(120deg, var(--accent), var(--accent-2));
+		color: #1b0d2b;
+		font-weight: 600;
+	}
+	.back.secondary {
+		background: transparent;
+		border: 1px solid var(--stroke);
+		color: var(--text);
+	}
+</style>

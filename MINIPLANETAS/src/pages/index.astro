@@ -2,12 +2,23 @@
 import { planetData } from '../data/planets';
 
 const planets = planetData;
+const shufflePlanets = (items = []) => {
+	const shuffled = [...items];
+	for (let index = shuffled.length - 1; index > 0; index -= 1) {
+		const randomIndex = Math.floor(Math.random() * (index + 1));
+		[shuffled[index], shuffled[randomIndex]] = [shuffled[randomIndex], shuffled[index]];
+	}
+	return shuffled;
+};
+const featuredPlanets = shufflePlanets(planets).slice(0, 3);
+const totalPlanets = planets.length;
 const basePath = import.meta.env.BASE_URL;
 const normalizedBase =
 	basePath === '/' ? '' : `/${basePath.replace(/^\/+|\/+$/g, '')}`;
 const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}`;
 const toAssetPath = (path = '') =>
 	path.startsWith('/') ? `${normalizedBase}${path}` : `${normalizedBase}/${path}`;
+const editImageUrl = toAssetPath('edit.png?v=20260220-1');
 ---
 
 <html lang="es">
@@ -36,16 +47,40 @@ const toAssetPath = (path = '') =>
 
 		<main>
 			<section class="hero">
-				<p class="eyebrow">El Universo</p>
-				<h1>Muro dinámico de mini planetas</h1>
+				<p class="eyebrow">Bienvenido al universo MINIPLANETAS</p>
+				<h1>Cada planeta guarda una emoción, una luz y una historia</h1>
 				<p>
-					Cada mundo flota en su propia órbita. Explora el muro y entra en la ficha detallada
-					para descubrir su historia.
+					Esta portada es una puerta al asombro: respira, elige un rumbo y déjate llevar por
+					paisajes diminutos que parecen sueños en órbita.
 				</p>
+				<div class="hero-actions">
+					<a class="cta cta-primary" href={toBasePath('catalogo')}>Entrar al catálogo</a>
+					<a class="cta" href={toBasePath('sobre')}>Conocer al creador</a>
+				</div>
 			</section>
 
-			<section class="masonry" aria-label="Muro de planetas">
-				{planets.map((planet, index) => (
+			<section class="overview" aria-label="Resumen del universo">
+				<article>
+					<p class="label">Planetas publicados</p>
+					<strong>{totalPlanets}</strong>
+				</article>
+				<article>
+					<p class="label">Recorrido recomendado</p>
+					<strong>Portada → Catálogo → Ficha</strong>
+				</article>
+				<article>
+					<p class="label">Tipo de experiencia</p>
+					<strong>Visual + técnica</strong>
+				</article>
+			</section>
+
+			<section class="featured" aria-label="Planetas destacados">
+				<div class="featured-head">
+					<h2>Destacados al azar</h2>
+					<a href={toBasePath('catalogo')}>Ver todos en el catálogo</a>
+				</div>
+				<div class="featured-grid">
+				{featuredPlanets.map((planet, index) => (
 					<a class="planet-card" href={toBasePath(`planetas/${planet.slug}`)} style={`--delay:${index * 120}ms`}>
 						<img src={toAssetPath(planet.image)} alt={`Mini planeta ${planet.name}`} loading="lazy" />
 						<div class="planet-meta">
@@ -55,6 +90,36 @@ const toAssetPath = (path = '') =>
 						</div>
 					</a>
 				))}
+				</div>
+			</section>
+
+			<section class="story" aria-label="Historia del proyecto">
+				<article class="story-card">
+					<h2>Sobre el creador</h2>
+					<p>
+						Detrás de cada mini-planeta hay una mirada que mezcla paisaje, paciencia y deseo de
+						compartir belleza. Conoce la persona que transforma lugares reales en pequeñas órbitas.
+					</p>
+					<a href={toBasePath('sobre-el-creador')}>Ir a Sobre el creador</a>
+				</article>
+
+				<article class="story-card story-card--image-right">
+					<img
+						class="story-image"
+						src={editImageUrl}
+						alt="Proceso de edición de un mini-planeta"
+						loading="lazy"
+					/>
+					<div class="story-copy">
+						<h2>¿Cómo nace un mini-planeta?</h2>
+						<p>
+							Todo empieza en el terreno: explorar, observar y elegir el encuadre. Después llega el
+							trabajo de edición para convertir un instante real en un mundo pequeño que invita a
+							imaginar.
+						</p>
+						<a href={toBasePath('como-nace-un-mini-planeta')}>Ver proceso completo</a>
+					</div>
+				</article>
 			</section>
 		</main>
 	</body>
@@ -124,7 +189,7 @@ const toAssetPath = (path = '') =>
 
 	.hero {
 		max-width: 52rem;
-		margin-bottom: 2rem;
+		margin-bottom: 1.5rem;
 	}
 
 	.eyebrow {
@@ -146,20 +211,163 @@ const toAssetPath = (path = '') =>
 		line-height: 1.6;
 	}
 
-	.masonry {
-		column-count: 1;
-		column-gap: 1rem;
+	.hero-actions {
+		display: flex;
+		gap: 0.8rem;
+		flex-wrap: wrap;
+		margin-top: 1.2rem;
+	}
+
+	.cta {
+		padding: 0.62rem 0.9rem;
+		border-radius: 0.75rem;
+		border: 1px solid var(--stroke);
+		background: rgba(20, 14, 35, 0.62);
+		font-size: 0.92rem;
+	}
+
+	.cta-primary {
+		border-color: rgba(255, 183, 77, 0.5);
+		background: rgba(255, 183, 77, 0.14);
+	}
+
+	.overview {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+		gap: 0.8rem;
+		margin-bottom: 2rem;
+	}
+
+	.overview article {
+		padding: 0.95rem;
+		border-radius: 0.9rem;
+		background: rgba(20, 14, 35, 0.7);
+		border: 1px solid var(--stroke);
+		display: grid;
+		gap: 0.35rem;
+	}
+
+	.overview .label {
+		margin: 0;
+		font-size: 0.78rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--muted);
+	}
+
+	.overview strong {
+		font-family: 'Fraunces', serif;
+		font-size: 1.1rem;
+		font-weight: 600;
+	}
+
+	.featured-head {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		gap: 0.8rem;
+		margin-bottom: 0.9rem;
+	}
+
+	.featured-head h2 {
+		margin: 0;
+		font-family: 'Fraunces', serif;
+	}
+
+	.featured-head a {
+		color: var(--accent-2);
+		font-size: 0.9rem;
+	}
+
+	.featured-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+		gap: 1rem;
+	}
+
+	.story {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1rem;
+		margin-top: 2rem;
+		align-items: stretch;
+	}
+
+	.story-card {
+		background: rgba(20, 14, 35, 0.8);
+		border: 1px solid var(--stroke);
+		border-radius: 3px;
+		padding: 1.1rem 1.35rem;
+		display: grid;
+		gap: 0.55rem;
+		min-height: 198px;
+		height: 100%;
+	}
+
+	.story-card h2 {
+		margin: 0;
+		font-family: 'Fraunces', serif;
+		font-size: 1.2rem;
+	}
+
+	.story-card p {
+		margin: 0;
+		color: var(--muted);
+		line-height: 1.55;
+	}
+
+	.story-card a {
+		justify-self: start;
+		margin-top: 0.2rem;
+		padding: 0.46rem 0.75rem;
+		border-radius: 0.7rem;
+		border: 1px solid var(--stroke);
+		font-size: 0.88rem;
+		color: var(--accent-2);
+	}
+
+	.story-image {
+		width: 96px;
+		max-width: 100%;
+		height: auto;
+		border-radius: 0.55rem;
+		object-fit: cover;
+		filter: brightness(1.22) saturate(0.8) contrast(0.92);
+	}
+
+	.story-card--image-right {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) 96px;
+		grid-template-areas: 'copy image';
+		align-items: center;
+		column-gap: 0.9rem;
+		height: 100%;
+	}
+
+	.story-card--image-right .story-copy {
+		grid-area: copy;
+		display: flex;
+		flex-direction: column;
+		gap: 0.55rem;
+		min-height: 100%;
+	}
+
+	.story-card--image-right .story-copy a {
+		margin-top: auto;
+	}
+
+	.story-card--image-right .story-image {
+		grid-area: image;
+		justify-self: end;
+		align-self: center;
 	}
 
 	.planet-card {
-		display: inline-block;
-		width: 100%;
-		margin: 0 0 1rem;
+		display: block;
 		background: rgba(20, 14, 35, 0.8);
 		border: 1px solid var(--stroke);
 		border-radius: 1rem;
 		overflow: hidden;
-		break-inside: avoid;
 		animation: float 8s ease-in-out infinite;
 		animation-delay: var(--delay);
 	}
@@ -195,15 +403,19 @@ const toAssetPath = (path = '') =>
 		color: var(--accent-2);
 	}
 
-	@media (min-width: 760px) {
-		.masonry {
-			column-count: 2;
+	@media (max-width: 700px) {
+		.featured-head {
+			flex-direction: column;
+			align-items: flex-start;
 		}
-	}
 
-	@media (min-width: 1120px) {
-		.masonry {
-			column-count: 3;
+		.story {
+			grid-template-columns: 1fr;
+		}
+
+		.story-card {
+			border-radius: 3px;
+			min-height: auto;
 		}
 	}
 
