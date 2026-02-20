@@ -36,7 +36,9 @@ const sizes = [...new Set(planets.map((planet) => planet.size))].sort((a, b) =>
 			<a class="brand" href={toBasePath('')}>MINIPLANETAS</a>
 			<nav class="top-nav">
 				<a href={toBasePath('')}>El Universo</a>
-				<a href={toBasePath('sobre')}>Sobre el creador</a>
+				<a href={toBasePath('catalogo')} aria-current="page">Catálogo</a>
+				<a href={toBasePath('como-nace-un-mini-planeta')}>¿Cómo nace un mini-planeta?</a>
+				<a href={toBasePath('sobre-el-creador')}>Sobre el creador</a>
 			</nav>
 		</header>
 
@@ -98,6 +100,9 @@ const sizes = [...new Set(planets.map((planet) => planet.size))].sort((a, b) =>
 				})}
 			</section>
 		</main>
+		<footer class="footer">
+			<p>© 2026 MINIPLANETAS .:. SQLP .:. Made with ❤️ in Tierz for the entire Universe...</p>
+		</footer>
 
 		<script is:inline>
 			const textInput = document.querySelector('#filter-text');
@@ -189,8 +194,18 @@ const sizes = [...new Set(planets.map((planet) => planet.size))].sort((a, b) =>
 	}
 	.brand { font-family: 'Fraunces', serif; letter-spacing: .22em; text-transform: uppercase; font-size: .9rem; }
 	.top-nav { display: flex; gap: 1.2rem; }
+	.top-nav a { opacity: .84; transition: opacity 200ms ease, color 200ms ease; }
+	.top-nav a:hover { opacity: 1; }
+	.top-nav a[aria-current='page'] { opacity: 1; color: var(--accent); font-weight: 600; }
 
 	main { padding: 2rem 6vw 4rem; }
+	.footer {
+		padding: 1rem 6vw 1.5rem;
+		border-top: 1px solid var(--stroke);
+		text-align: center;
+		font-size: .84rem;
+		color: var(--muted);
+	}
 	.eyebrow { margin: 0; color: var(--accent); letter-spacing: .25em; text-transform: uppercase; font-size: .72rem; }
 	.intro h1 { margin: .5rem 0 1.5rem; font-family: 'Fraunces', serif; }
 

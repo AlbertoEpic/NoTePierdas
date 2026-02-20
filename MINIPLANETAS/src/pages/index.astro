@@ -1,8 +1,19 @@
 ---
 import { planetData } from '../data/planets';
 
+type Planet = {
+	slug: string;
+	name: string;
+	image: string;
+	image360: string;
+	description: string;
+	tone: string;
+	orbit: string;
+	size: string;
+};
+
 const planets = planetData;
-const shufflePlanets = (items = []) => {
+const shufflePlanets = <T,>(items: T[]) => {
 	const shuffled = [...items];
 	for (let index = shuffled.length - 1; index > 0; index -= 1) {
 		const randomIndex = Math.floor(Math.random() * (index + 1));
@@ -10,7 +21,7 @@ const shufflePlanets = (items = []) => {
 	}
 	return shuffled;
 };
-const featuredPlanets = shufflePlanets(planets).slice(0, 3);
+const featuredPlanets = shufflePlanets(planets as Planet[]).slice(0, 3);
 const totalPlanets = planets.length;
 const basePath = import.meta.env.BASE_URL;
 const normalizedBase =
@@ -19,6 +30,7 @@ const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}
 const toAssetPath = (path = '') =>
 	path.startsWith('/') ? `${normalizedBase}${path}` : `${normalizedBase}/${path}`;
 const editImageUrl = toAssetPath('edit.png?v=20260220-1');
+const portraitImageUrl = toAssetPath('retrato.jpg?v=20260220-1');
 ---
 
 <html lang="es">
@@ -40,8 +52,10 @@ const editImageUrl = toAssetPath('edit.png?v=20260220-1');
 		<header class="top">
 			<a class="brand" href={toBasePath('')}>MINIPLANETAS</a>
 			<nav class="top-nav">
-				<a href={toBasePath('catalogo')}>El Catálogo</a>
-				<a href={toBasePath('sobre')}>Sobre el creador</a>
+				<a href={toBasePath('')} aria-current="page">El Universo</a>
+				<a href={toBasePath('catalogo')}>Catálogo</a>
+				<a href={toBasePath('como-nace-un-mini-planeta')}>¿Cómo nace un mini-planeta?</a>
+				<a href={toBasePath('sobre-el-creador')}>Sobre el creador</a>
 			</nav>
 		</header>
 
@@ -66,7 +80,7 @@ const editImageUrl = toAssetPath('edit.png?v=20260220-1');
 				</article>
 				<article>
 					<p class="label">Recorrido recomendado</p>
-					<strong>Portada → Catálogo → Ficha</strong>
+					<strong>Portada → Catálogo → Ficha → Aterrizar!</strong>
 				</article>
 				<article>
 					<p class="label">Tipo de experiencia</p>
@@ -94,13 +108,21 @@ const editImageUrl = toAssetPath('edit.png?v=20260220-1');
 			</section>
 
 			<section class="story" aria-label="Historia del proyecto">
-				<article class="story-card">
-					<h2>Sobre el creador</h2>
-					<p>
-						Detrás de cada mini-planeta hay una mirada que mezcla paisaje, paciencia y deseo de
-						compartir belleza. Conoce la persona que transforma lugares reales en pequeñas órbitas.
-					</p>
-					<a href={toBasePath('sobre-el-creador')}>Ir a Sobre el creador</a>
+				<article class="story-card story-card--image-right">
+					<img
+						class="story-image"
+						src={portraitImageUrl}
+						alt="Retrato del creador"
+						loading="lazy"
+					/>
+					<div class="story-copy">
+						<h2>Sobre el creador</h2>
+						<p>
+							Detrás de cada mini-planeta hay una mirada que mezcla paisaje, paciencia y deseo de
+							compartir belleza. Conoce la persona que transforma lugares reales en pequeñas órbitas.
+						</p>
+						<a href={toBasePath('sobre-el-creador')}>Ir a Sobre el creador</a>
+					</div>
 				</article>
 
 				<article class="story-card story-card--image-right">
@@ -122,6 +144,9 @@ const editImageUrl = toAssetPath('edit.png?v=20260220-1');
 				</article>
 			</section>
 		</main>
+		<footer class="footer">
+			<p>© 2026 MINIPLANETAS .:. SQLP .:. Made with ❤️ in Tierz for the entire Universe...</p>
+		</footer>
 	</body>
 </html>
 
@@ -183,8 +208,31 @@ const editImageUrl = toAssetPath('edit.png?v=20260220-1');
 		font-size: 0.95rem;
 	}
 
+	.top-nav a {
+		opacity: 0.84;
+		transition: opacity 200ms ease, color 200ms ease;
+	}
+
+	.top-nav a:hover {
+		opacity: 1;
+	}
+
+	.top-nav a[aria-current='page'] {
+		opacity: 1;
+		color: var(--accent);
+		font-weight: 600;
+	}
+
 	main {
 		padding: 2rem 6vw 4rem;
+	}
+
+	.footer {
+		padding: 1rem 6vw 1.5rem;
+		border-top: 1px solid var(--stroke);
+		text-align: center;
+		font-size: 0.84rem;
+		color: var(--muted);
 	}
 
 	.hero {

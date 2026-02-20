@@ -1,7 +1,24 @@
 ---
 import { planetData } from '../../data/planets';
-import { existsSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
+
+type Planet = {
+	slug: string;
+	name: string;
+	image: string;
+	image360?: string;
+	description: string;
+	tone: string;
+	orbit: string;
+	size: string;
+};
+
+type PlanetProfile = {
+	location: string;
+	coordinates: string;
+	atmosphere: string[];
+	discoveryDate: string;
+	equipment: string;
+};
 
 export function getStaticPaths() {
 	return planetData.map((planet) => ({
@@ -10,7 +27,7 @@ export function getStaticPaths() {
 	}));
 }
 
-const { planet } = Astro.props;
+const { planet } = Astro.props as { planet: Planet };
 const basePath = import.meta.env.BASE_URL;
 const normalizedBase =
 	basePath === '/' ? '' : `/${basePath.replace(/^\/+|\/+$/g, '')}`;
@@ -22,7 +39,7 @@ const toPublicAssetPath = (path = '') =>
 		? path.slice(normalizedBase.length)
 		: path;
 
-const planetProfiles = {
+const planetProfiles: Record<string, PlanetProfile> = {
 	'planeta-alquezar': {
 		location: 'Alquézar, España',
 		coordinates: '42.1728, -0.0239',
@@ -60,7 +77,7 @@ const planetProfiles = {
 	},
 };
 
-const defaultProfile = {
+const defaultProfile: PlanetProfile = {
 	location: 'Ubicación por definir',
 	coordinates: '00.0000, 00.0000',
 	atmosphere: ['Natural'],
@@ -77,8 +94,7 @@ const discoveryDate = new Date(profile.discoveryDate).toLocaleDateString('es-ES'
 const sphericalImage = planet.image360;
 const sphericalPublicPath = sphericalImage ? toPublicAssetPath(sphericalImage) : null;
 const hasEquirectangularImage = Boolean(
-	sphericalPublicPath?.startsWith('/pano360/') &&
-		existsSync(fileURLToPath(new URL(`../../../public${sphericalPublicPath}`, import.meta.url)))
+	sphericalPublicPath?.startsWith('/pano360/')
 );
 ---
 
@@ -102,8 +118,9 @@ const hasEquirectangularImage = Boolean(
 			<a class="brand" href={toBasePath('')}>MINIPLANETAS</a>
 			<nav class="top-nav">
 				<a href={toBasePath('')}>El Universo</a>
-				<a href={toBasePath('catalogo')}>El Catálogo</a>
-				<a href={toBasePath('sobre')}>Técnica</a>
+				<a href={toBasePath('catalogo')} aria-current="page">Catálogo</a>
+				<a href={toBasePath('como-nace-un-mini-planeta')}>¿Cómo nace un mini-planeta?</a>
+				<a href={toBasePath('sobre-el-creador')}>Sobre el creador</a>
 			</nav>
 		</header>
 
@@ -127,7 +144,7 @@ const hasEquirectangularImage = Boolean(
 					<div class="atmosphere">
 						<strong>Atmósfera:</strong>
 						<ul>
-							{profile.atmosphere.map((tag) => <li>{tag}</li>)}
+							{profile.atmosphere.map((tag: string) => <li>{tag}</li>)}
 						</ul>
 					</div>
 					<p><strong>Fecha de descubrimiento:</strong> {discoveryDate}</p>
@@ -149,7 +166,7 @@ const hasEquirectangularImage = Boolean(
 				</div>
 				<div class="actions-primary">
 					<button type="button" class="highlight" data-open-fullscreen>Ver imagen a pantalla completa</button>
-					{hasEquirectangularImage && (
+					{hasEquirectangularImage && sphericalPublicPath && (
 						<a class="highlight" href={toBasePath(`planetas/${planet.slug}/aterrizar?img=${encodeURIComponent(sphericalPublicPath)}`)} target="_blank" rel="noopener noreferrer">Aterrizar en el planeta</a>
 					)}
 				</div>
@@ -159,6 +176,9 @@ const hasEquirectangularImage = Boolean(
 				</div>
 			</section>
 		</main>
+		<footer class="footer">
+			<p>© 2026 MINIPLANETAS .:. SQLP .:. Made with ❤️ in Tierz for the entire Universe...</p>
+		</footer>
 
 		<div class="viewer" data-viewer aria-hidden="true">
 			<button class="viewer-close" type="button" aria-label="Cerrar visor" data-close-viewer>✕</button>
@@ -291,6 +311,9 @@ const hasEquirectangularImage = Boolean(
 	}
 	.brand { font-family: 'Fraunces', serif; letter-spacing: .22em; text-transform: uppercase; font-size: .9rem; }
 	.top-nav { display: flex; gap: 1.2rem; font-size: .94rem; }
+	.top-nav a { opacity: .84; transition: opacity 200ms ease, color 200ms ease; }
+	.top-nav a:hover { opacity: 1; }
+	.top-nav a[aria-current='page'] { opacity: 1; color: var(--accent); font-weight: 600; }
 
 	.planet-view {
 		display: grid;
@@ -298,6 +321,13 @@ const hasEquirectangularImage = Boolean(
 		gap: 2rem;
 		align-items: start;
 		padding: 2rem 6vw 4rem;
+	}
+	.footer {
+		padding: 1rem 6vw 1.5rem;
+		border-top: 1px solid var(--stroke);
+		text-align: center;
+		font-size: .84rem;
+		color: var(--muted);
 	}
 
 	.visual {
