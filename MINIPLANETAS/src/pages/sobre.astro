@@ -125,8 +125,8 @@ const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}
 	.top-nav { display: flex; gap: 1.2rem; }
 	.menu-toggle {
 		display: none;
-		width: 2.3rem;
-		height: 2.3rem;
+		width: 2.75rem;
+		height: 2.75rem;
 		padding: 0;
 		border-radius: .65rem;
 		border: 1px solid var(--stroke);
@@ -181,6 +181,11 @@ const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}
 		.top {
 			flex-wrap: wrap;
 			gap: .8rem;
+			padding: .95rem 5vw;
+		}
+		.brand {
+			font-size: .78rem;
+			letter-spacing: .16em;
 		}
 		.menu-toggle {
 			display: inline-flex;
@@ -193,6 +198,10 @@ const toBasePath = (path = '') => `${normalizedBase}/${path.replace(/^\/+/, '')}
 			padding-top: 0;
 			border-top: 1px solid transparent;
 			overflow: hidden;
+		}
+		.top-nav a {
+			font-size: .98rem;
+			padding: .18rem 0;
 		}
 		.top.is-menu-ready .top-nav {
 			display: flex;
