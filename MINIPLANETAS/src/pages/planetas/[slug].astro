@@ -116,7 +116,12 @@ const hasEquirectangularImage = Boolean(
 	<body>
 		<header class="top">
 			<a class="brand" href={toBasePath('')}>MINIPLANETAS</a>
-			<nav class="top-nav">
+			<button class="menu-toggle" type="button" aria-label="Abrir menú" aria-controls="main-nav" aria-expanded="false">
+				<span></span>
+				<span></span>
+				<span></span>
+			</button>
+			<nav class="top-nav" id="main-nav">
 				<a href={toBasePath('')}>El Universo</a>
 				<a href={toBasePath('catalogo')} aria-current="page">Catálogo</a>
 				<a href={toBasePath('como-nace-un-mini-planeta')}>¿Cómo nace un mini-planeta?</a>
@@ -188,6 +193,38 @@ const hasEquirectangularImage = Boolean(
 		</div>
 
 		<script is:inline>
+			const topHeader = document.querySelector('.top');
+			const menuToggle = topHeader?.querySelector('.menu-toggle');
+			const topNav = topHeader?.querySelector('.top-nav');
+
+			if (topHeader && menuToggle && topNav) {
+				topHeader.classList.add('is-menu-ready');
+
+				const closeMenu = () => {
+					topNav.classList.remove('is-open');
+					menuToggle.setAttribute('aria-expanded', 'false');
+					menuToggle.setAttribute('aria-label', 'Abrir menú');
+				};
+
+				menuToggle.addEventListener('click', () => {
+					const isOpen = menuToggle.getAttribute('aria-expanded') === 'true';
+					const shouldOpen = !isOpen;
+					topNav.classList.toggle('is-open', shouldOpen);
+					menuToggle.setAttribute('aria-expanded', String(shouldOpen));
+					menuToggle.setAttribute('aria-label', shouldOpen ? 'Cerrar menú' : 'Abrir menú');
+				});
+
+				topNav.querySelectorAll('a').forEach((link) => {
+					link.addEventListener('click', closeMenu);
+				});
+
+				window.addEventListener('resize', () => {
+					if (window.innerWidth > 780) {
+						closeMenu();
+					}
+				});
+			}
+
 			const fullButton = document.querySelector('[data-open-fullscreen]');
 			const mainImage = document.querySelector('[data-main-image]');
 			const viewer = document.querySelector('[data-viewer]');
@@ -311,6 +348,30 @@ const hasEquirectangularImage = Boolean(
 	}
 	.brand { font-family: 'Fraunces', serif; letter-spacing: .22em; text-transform: uppercase; font-size: .9rem; }
 	.top-nav { display: flex; gap: 1.2rem; font-size: .94rem; }
+	.menu-toggle {
+		display: none;
+		width: 2.3rem;
+		height: 2.3rem;
+		padding: 0;
+		border-radius: .65rem;
+		border: 1px solid var(--stroke);
+		background: rgba(18, 12, 32, .78);
+		cursor: pointer;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+		gap: .28rem;
+	}
+	.menu-toggle span {
+		display: block;
+		width: 1rem;
+		height: 2px;
+		background: var(--text);
+		transition: transform 180ms ease, opacity 180ms ease;
+	}
+	.menu-toggle[aria-expanded='true'] span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+	.menu-toggle[aria-expanded='true'] span:nth-child(2) { opacity: 0; }
+	.menu-toggle[aria-expanded='true'] span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 	.top-nav a { opacity: .84; transition: opacity 200ms ease, color 200ms ease; }
 	.top-nav a:hover { opacity: 1; }
 	.top-nav a[aria-current='page'] { opacity: 1; color: var(--accent); font-weight: 600; }
@@ -491,5 +552,45 @@ const hasEquirectangularImage = Boolean(
 		margin: 0;
 		user-select: none;
 		-webkit-user-drag: none;
+	}
+
+	@media (max-width: 780px) {
+		.top {
+			flex-wrap: wrap;
+			gap: .8rem;
+		}
+		.menu-toggle {
+			display: inline-flex;
+			margin-left: auto;
+		}
+		.top-nav {
+			width: 100%;
+			flex-direction: column;
+			gap: .55rem;
+			padding-top: 0;
+			border-top: 1px solid transparent;
+			overflow: hidden;
+		}
+		.top.is-menu-ready .top-nav {
+			display: flex;
+			max-height: 0;
+			opacity: 0;
+			transform: translateY(-6px);
+			pointer-events: none;
+			transition:
+				max-height 220ms ease,
+				opacity 180ms ease,
+				transform 180ms ease,
+				padding-top 180ms ease,
+				border-top-color 180ms ease;
+		}
+		.top.is-menu-ready .top-nav.is-open {
+			max-height: 16rem;
+			opacity: 1;
+			padding-top: .75rem;
+			border-top-color: var(--stroke);
+			transform: translateY(0);
+			pointer-events: auto;
+		}
 	}
 </style>
