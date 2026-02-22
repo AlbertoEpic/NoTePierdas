@@ -1,0 +1,5 @@
+[
+  { "nombre": "Vuelta al Embalse", "archivo": "rutas/ruta1.gpx", "tipo": "bici" },
+  { "nombre": "Subida al Pico", "archivo": "rutas/ruta2.gpx", "tipo": "senderismo" },
+  { "nombre": "Portalet-Astún", "archivo": "rutas/Portalet-Astún.gpx", "tipo": "skimo" }
+]

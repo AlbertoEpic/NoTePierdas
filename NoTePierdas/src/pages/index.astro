@@ -1,0 +1,54 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const base = import.meta.env.BASE_URL;
+const baseRoot = base.replace(/\/+$/, '');
+const toBasePath = (path = '') => `${baseRoot}/${path.replace(/^\/+/, '')}`;
+
+const links = [
+	{
+		title: 'Vídeos de YouTube',
+		description: 'Listado completo con miniaturas y enlaces directos.',
+		url: '/videos',
+	},
+	{
+		title: 'Shorts de YouTube',
+		description: 'Lista rápida de shorts con sus enlaces.',
+		url: '/shorts',
+	},
+	{
+		title: 'Reels de Instagram',
+		description: 'Listado de reels con enlaces directos.',
+		url: '/reels',
+	},
+	{
+		title: 'Rutas GPS',
+		description: 'Mapa interactivo con tracks y estadísticas.',
+		url: '/rutas',
+	},
+];
+---
+
+<Layout>
+	<main class="page">
+		<header class="hero">
+			<p class="eyebrow">Portada</p>
+			<h1>La Meteo Que Viene</h1>
+			<p class="subtitle">
+				Accesos directos a los contenidos de YouTube.
+			</p>
+		</header>
+
+		<section class="grid">
+			{links.map((link) => (
+				<article class="card">
+					<div class="card-body">
+						<h2>{link.title}</h2>
+						<p>{link.description}</p>
+					</div>
+					<a class="action" href={toBasePath(link.url)}>Entrar</a>
+				</article>
+			))}
+		</section>
+	</main>
+</Layout>
