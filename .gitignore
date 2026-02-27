@@ -31,3 +31,6 @@ System Volume Information/
 
 # jetbrains setting folder
 .idea/
+
+# nested independent project
+MINIPLANETAS/
