@@ -1,0 +1,18 @@
+---
+const target = '/MINIPLANETAS/index.html';
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Redirigiendo a MINIPLANETAS…</title>
+		<meta http-equiv="refresh" content={`0;url=${target}`} />
+	</head>
+	<body>
+		<script>
+			window.location.replace(`${target}${window.location.search}${window.location.hash}`);
+		</script>
+	</body>
+</html>
